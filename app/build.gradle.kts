@@ -1,7 +1,6 @@
 plugins {
     alias(libs.plugins.aktiia.android.application.compose)
     alias(libs.plugins.aktiia.jvm.retrofit)
-    alias(libs.plugins.kotlin.compose)
 }
 
 android {

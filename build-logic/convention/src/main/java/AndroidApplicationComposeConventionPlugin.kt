@@ -8,6 +8,7 @@ class AndroidApplicationComposeConventionPlugin: Plugin<Project> {
     override fun apply(target: Project) {
         target.run {
             pluginManager.apply("aktiia.android.application")
+            pluginManager.apply("org.jetbrains.kotlin.plugin.compose")
 
             val extensions = extensions.getByType<ApplicationExtension>()
             configureAndroidCompose(extensions)
