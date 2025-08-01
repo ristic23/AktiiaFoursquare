@@ -14,6 +14,7 @@ dependencies {
     implementation(projects.core.database)
 
     implementation(libs.androidx.core.ktx)
+    implementation(libs.bundles.koin)
     implementation(libs.androidx.appcompat)
     implementation(libs.material)
     testImplementation(libs.junit)

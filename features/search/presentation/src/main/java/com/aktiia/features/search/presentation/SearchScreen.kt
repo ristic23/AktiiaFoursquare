@@ -32,12 +32,12 @@ import com.aktiia.features.search.presentation.SearchAction.OnPlaceClick
 import org.koin.androidx.compose.koinViewModel
 
 @Composable
-fun IntroScreenWrapper(
+fun SearchScreenWrapper(
 //    onSearchClick: (String) -> Unit,
     onPlaceClick: (String) -> Unit,
     viewModel: SearchViewModel = koinViewModel(),
 ) {
-    IntroScreen(
+    SearchScreen(
         state = viewModel.state,
         onAction = viewModel::onAction,
     )
@@ -45,7 +45,7 @@ fun IntroScreenWrapper(
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun IntroScreen(
+private fun SearchScreen(
     state: SearchState,
     onAction: (SearchAction) -> Unit
 ) {
@@ -115,7 +115,7 @@ fun IntroScreen(
 @Preview
 @Composable
 private fun SearchScreenPreview() {
-    IntroScreen(
+    SearchScreen(
         state = SearchState(),
         onAction = {}
     )
