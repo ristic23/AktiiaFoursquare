@@ -13,12 +13,11 @@ data class PlacesDataDto(
 data class PlaceDataDto(
     @SerialName("fsq_id") val id: String,
     @SerialName("name") val name: String,
+    @SerialName("location") val location: LocationDto,
     @SerialName("distance") val distance: Int?, // in meters
-    @SerialName("timezone") val timezone: String?,
-    @SerialName("link") val link: String?, // Foursquare URL
-//    @SerialName("categories") val categories: List<Category>,
-//    @SerialName("geocodes") val geocodes: Geocodes?,
-//    @SerialName("location") val location: Location?,
-//    @SerialName("related_places") val relatedPlaces: RelatedPlaces? = null,
-//    @SerialName("chains") val chains: List<Chain>? = null
+)
+
+@Serializable
+data class LocationDto(
+    @SerialName("formatted_address") val formattedAddress: String?,
 )

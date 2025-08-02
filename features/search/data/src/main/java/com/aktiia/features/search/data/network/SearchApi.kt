@@ -8,8 +8,8 @@ interface SearchApi {
     @GET("search")
     suspend fun searchPlaces(
         @Query("query") query: String?,
-        @Query("near") near: String? = null,
         @Query("ll") latLng: String? = null,
-        @Query("limit") limit: Int = 50
+        @Query("limit") limit: Int = 50,
+        @Query("fields") fields: String = "fsq_id,name,location,distance"
     ): PlacesDataDto
 }

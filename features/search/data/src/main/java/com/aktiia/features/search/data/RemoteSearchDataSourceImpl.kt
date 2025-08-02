@@ -20,7 +20,7 @@ class RemoteSearchDataSourceImpl(
         return try {
             val response = baseApi.searchPlaces(
                 query = query,
-                latLng = ll
+                latLng = ll,
             )
             val mappedList = response.results.map { it.toPlacesData() }
             Result.Success(mappedList)
