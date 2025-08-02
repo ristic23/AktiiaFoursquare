@@ -33,7 +33,6 @@ fun NavigationRoot(
             route = "place/{placeId}",
             arguments = listOf(navArgument("placeId") { type = NavType.StringType })
         ) { backStackEntry ->
-            // Todo screen and go to places
             val placeId = backStackEntry.arguments?.getString("placeId") ?: ""
             DetailsScreenWrapper(
                 placeId = placeId

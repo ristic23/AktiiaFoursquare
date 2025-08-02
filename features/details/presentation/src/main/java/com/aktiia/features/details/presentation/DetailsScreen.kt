@@ -12,9 +12,11 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.aktiia.core.domain.PlaceDetailsData
+import com.aktiia.core.domain.details.HoursOpen
 import com.aktiia.core.presentation.designsystem.FavoriteIcon
 import org.koin.androidx.compose.koinViewModel
 
@@ -70,7 +72,16 @@ private fun DetailsScreen(
             style = MaterialTheme.typography.titleMedium
         )
         Text(
-            text = state.item?.hours ?: "",
+            text = state.item?.hours?.display ?: "",
+            modifier = Modifier,
+            style = MaterialTheme.typography.titleMedium
+        )
+        Text(
+            text = if (state.item?.hours?.isOpen == true) {
+                stringResource(R.string.open)
+            } else {
+                ""
+            },
             modifier = Modifier,
             style = MaterialTheme.typography.titleMedium
         )
@@ -117,9 +128,12 @@ private fun DetailsScreenPreview() {
                 description = "Opis lokala",
                 tel = "+3816677116677",
                 website = "www.food.com",
-                hours = "Mon-Sat 9:00-23:00; Sun 12:00-21:00",
+                hours = HoursOpen(
+                    display = "Mon-Sat 9:00-23:00; Sun 12:00-21:00",
+                    isOpen = true
+                ),
                 rating = 6.9,
-                photos = "",
+                photos = listOf(),
             )
         ),
         onAction = {},

@@ -10,7 +10,7 @@ import com.aktiia.features.search.domain.RemoteSearchDataSource
 import kotlin.coroutines.cancellation.CancellationException
 
 class RemoteSearchDataSourceImpl(
-    private val baseApi: SearchApi,
+    private val searchApi: SearchApi,
 ) : RemoteSearchDataSource {
 
     override suspend fun search(
@@ -18,7 +18,7 @@ class RemoteSearchDataSourceImpl(
         ll: String,
     ): Result<List<PlaceData>, DataError.Network> {
         return try {
-            val response = baseApi.searchPlaces(
+            val response = searchApi.searchPlaces(
                 query = query,
                 latLng = ll,
             )

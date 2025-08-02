@@ -4,9 +4,11 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.compose.runtime.getValue
 import androidx.lifecycle.ViewModel
+import com.aktiia.core.domain.util.Result
+import com.aktiia.features.details.domain.DetailsRepository
 
 class DetailsViewModel(
-
+    private val detailsRepository: DetailsRepository
 ): ViewModel() {
 
     var state by mutableStateOf(DetailsState())
@@ -22,7 +24,14 @@ class DetailsViewModel(
         }
     }
 
-    fun fetchPlace(placeId: String) {
-        // todo repository fetch
+    suspend fun fetchPlace(placeId: String) {
+        when (val result = detailsRepository.fetchDetails(placeId)) {
+            is Result.Error -> {
+                // todo
+            }
+            is Result.Success -> {
+                state = state.copy(item = result.data)
+            }
+        }
     }
 }

@@ -1,6 +1,7 @@
 package com.aktiia.foursquare.di
 
 import com.aktiia.core.presentation.designsystem.BuildConfig
+import com.aktiia.features.details.data.network.DetailsApi
 import com.aktiia.features.search.data.network.SearchApi
 import com.jakewharton.retrofit2.converter.kotlinx.serialization.asConverterFactory
 import kotlinx.serialization.json.Json
@@ -41,5 +42,8 @@ val networkModule = module {
 
     single<SearchApi> {
         get<Retrofit>().create(SearchApi::class.java)
+    }
+    single<DetailsApi> {
+        get<Retrofit>().create(DetailsApi::class.java)
     }
 }
