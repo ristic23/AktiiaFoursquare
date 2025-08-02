@@ -2,6 +2,7 @@ package com.aktiia.foursquare
 
 import android.app.Application
 import com.aktiia.core.database.di.databaseModule
+import com.aktiia.features.details.presentation.di.detailsViewModelModule
 import com.aktiia.features.favorites.data.di.favoritesRepositoryModule
 import com.aktiia.features.favorites.presentation.di.favoriteViewModelModule
 import com.aktiia.features.search.data.di.searchRepositoryModule
@@ -32,6 +33,7 @@ class AktiiaApp: Application() {
                 databaseModule,
                 favoriteViewModelModule,
                 favoritesRepositoryModule,
+                detailsViewModelModule,
             )
         }
     }

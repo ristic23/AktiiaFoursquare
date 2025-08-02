@@ -6,6 +6,7 @@ import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.navArgument
+import com.aktiia.features.details.presentation.DetailsScreenWrapper
 import com.aktiia.features.favorites.presentation.FavoritesScreenWrapper
 import com.aktiia.features.search.presentation.SearchScreenWrapper
 
@@ -34,7 +35,9 @@ fun NavigationRoot(
         ) { backStackEntry ->
             // Todo screen and go to places
             val placeId = backStackEntry.arguments?.getString("placeId") ?: ""
-//            PlaceScreenWrapper(placeId = placeId)
+            DetailsScreenWrapper(
+                placeId = placeId
+            )
         }
         composable(route = Routes.FAVORITES) {
             FavoritesScreenWrapper(
