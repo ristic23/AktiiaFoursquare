@@ -9,7 +9,9 @@ android {
 
 dependencies {
     implementation(projects.core.domain)
+    implementation(projects.features.search.domain)
 
+    implementation(libs.bundles.koin)
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.appcompat)
     implementation(libs.material)
