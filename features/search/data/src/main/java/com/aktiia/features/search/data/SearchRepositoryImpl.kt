@@ -6,6 +6,7 @@ import com.aktiia.core.domain.util.Result
 import com.aktiia.core.domain.util.asEmptyDataResult
 import com.aktiia.features.search.domain.LocaleSearchDataSource
 import com.aktiia.features.search.domain.PlaceData
+import com.aktiia.features.search.domain.PlaceId
 import com.aktiia.features.search.domain.RemoteSearchDataSource
 import com.aktiia.features.search.domain.SearchRepository
 import kotlinx.coroutines.CoroutineScope
@@ -34,6 +35,17 @@ class SearchRepositoryImpl(
                 }.await()
             }
         }
+    }
+
+    override suspend fun updateFavoriteStatus(
+        id: String,
+        isFavorite: Boolean
+    ): Result<PlaceId, DataError.Local> {
+        return localeSearchDataSource.updateFavoriteStatus(id, isFavorite)
+    }
+
+    override suspend fun getFavoritePlaces(isFavorite: Boolean): List<PlaceData> {
+        return localeSearchDataSource.getFavoritePlaces(isFavorite)
     }
 
 }

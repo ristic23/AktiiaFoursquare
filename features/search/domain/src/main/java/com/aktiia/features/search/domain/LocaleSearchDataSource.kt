@@ -11,4 +11,8 @@ interface LocaleSearchDataSource {
     suspend fun upsertPlaces(places: List<PlaceData>): Result<List<PlaceId>, DataError.Local>
 
     fun getPlaces(): Flow<List<PlaceData>>
+
+    suspend fun updateFavoriteStatus(id: String, isFavorite: Boolean): Result<PlaceId, DataError.Local>
+
+    suspend fun getFavoritePlaces(isFavorite: Boolean = true): List<PlaceData>
 }

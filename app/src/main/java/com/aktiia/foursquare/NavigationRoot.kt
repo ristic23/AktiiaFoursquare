@@ -19,7 +19,10 @@ fun NavigationRoot(
             SearchScreenWrapper(
                 onPlaceClick = {
 //                    navController.navigate("place")
-                }
+                },
+                onFavoriteClick = {
+//                    navController.navigate("favorites")
+                },
             )
         }
         composable(route = "place") {

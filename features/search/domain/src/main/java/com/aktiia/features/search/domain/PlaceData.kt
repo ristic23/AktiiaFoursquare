@@ -4,10 +4,8 @@ package com.aktiia.features.search.domain
 data class PlaceData(
     val id: String,
     val name: String,
-    val distance: Int?, // in meters
-    val location: Location,
+    val distance: String,
+    val address: String,
+    val isFavorite: Boolean,
 )
 
-data class Location(
-    val formattedAddress: String?,
-)

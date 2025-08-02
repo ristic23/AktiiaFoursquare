@@ -6,7 +6,7 @@ import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.aktiia.features.search.domain.SearchRepository
-import com.aktiia.features.search.presentation.SearchAction.OnPlaceClick
+import com.aktiia.features.search.presentation.SearchAction.OnFavoriteClick
 import com.aktiia.features.search.presentation.SearchAction.OnSearchClick
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
@@ -27,12 +27,19 @@ class SearchViewModel(
 
     fun onAction(action: SearchAction) {
         when (action) {
-            is OnPlaceClick -> {}
             is OnSearchClick -> {
                 viewModelScope.launch {
                     searchRepository.search(
                         query = action.query,
                         ll = "43.3209,21.8958", // Nis
+                    )
+                }
+            }
+            is OnFavoriteClick -> {
+                viewModelScope.launch {
+                    searchRepository.updateFavoriteStatus(
+                        id = action.id,
+                        isFavorite = action.isFavorite
                     )
                 }
             }

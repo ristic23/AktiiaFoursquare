@@ -17,9 +17,18 @@ class RoomPlacesLocaleDataSource(
 ): LocaleSearchDataSource {
     override suspend fun upsertPlaces(places: List<PlaceData>): Result<List<PlaceId>, DataError.Local> {
         return try {
-            placesDao.upsertPlaces(
-                places.map { it.toPlaceEntity() }
-            )
+//            placesDao.upsertPlaces(
+//                places.map { it.toPlaceEntityPartial() }
+//            )
+            places.forEach { newPlace ->
+                val existing = placesDao.getPlaceById(newPlace.id)
+                val placeToInsert = if (existing != null) {
+                    newPlace.copy(isFavorite = existing.isFavorite)
+                } else {
+                    newPlace
+                }
+                placesDao.insert(placeToInsert.toPlaceEntity())
+            }
             Result.Success(places.map { it.id })
         } catch (e: SQLiteFullException) {
             Result.Error(DataError.Local.DISK_FULL)
@@ -31,6 +40,22 @@ class RoomPlacesLocaleDataSource(
             .map { placesEntities ->
                 placesEntities.map { it.toPlaceData() }
             }
+    }
+
+    override suspend fun updateFavoriteStatus(
+        id: String,
+        isFavorite: Boolean
+    ): Result<PlaceId, DataError.Local> {
+        return try {
+            placesDao.updateFavoriteStatus(id, isFavorite)
+            Result.Success(id)
+        } catch (e: SQLiteFullException) {
+            Result.Error(DataError.Local.DISK_FULL)
+        }
+    }
+
+    override suspend fun getFavoritePlaces(isFavorite: Boolean): List<PlaceData> {
+        return placesDao.getFavoritePlaces(isFavorite).map { it.toPlaceData() }
     }
 
 }
