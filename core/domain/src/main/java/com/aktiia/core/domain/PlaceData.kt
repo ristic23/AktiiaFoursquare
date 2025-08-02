@@ -1,4 +1,4 @@
-package com.aktiia.features.search.domain
+package com.aktiia.core.domain
 
 
 data class PlaceData(

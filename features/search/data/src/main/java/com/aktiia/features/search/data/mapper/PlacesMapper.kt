@@ -1,7 +1,7 @@
 package com.aktiia.features.search.data.mapper
 
 import com.aktiia.features.search.data.dto.PlaceDataDto
-import com.aktiia.features.search.domain.PlaceData
+import com.aktiia.core.domain.PlaceData
 
 fun PlaceDataDto.toPlacesData(): PlaceData = PlaceData(
     id = id,

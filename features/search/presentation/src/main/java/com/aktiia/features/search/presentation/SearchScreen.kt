@@ -10,10 +10,10 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Favorite
-import androidx.compose.material.icons.filled.Settings
 import androidx.compose.material.icons.rounded.Close
 import androidx.compose.material.icons.rounded.Search
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -27,6 +27,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
@@ -63,18 +64,19 @@ private fun SearchScreen(
             .fillMaxSize()
             .background(Color.LightGray)
             .padding(vertical = 8.dp)
-            .padding(horizontal = 16.dp)
+            .padding(horizontal = 8.dp)
     ) {
         var searchQuery by remember { mutableStateOf("") }
         var active by remember { mutableStateOf(false) }
 
         Row(
             modifier = Modifier
-                .fillMaxWidth()
+                .fillMaxWidth(),
+            verticalAlignment = Alignment.CenterVertically
         ) {
             SearchBar(
                 modifier = Modifier
-                    .fillMaxWidth(),
+                    .weight(1f),
                 query = searchQuery,
                 onQueryChange = { searchQuery = it },
                 onSearch = {
@@ -107,17 +109,18 @@ private fun SearchScreen(
                 tonalElevation = 0.dp,
                 content = {}
             )
+//            Spacer(modifier = Modifier.width(4.dp))
+//            Icon(
+//                modifier = Modifier
+//                    .size(32.dp)
+//                    .clickable(onClick = {}),
+//                imageVector = Icons.Filled.Settings,
+//                contentDescription = "Database",
+//            )
+            Spacer(modifier = Modifier.width(4.dp))
             Icon(
                 modifier = Modifier
-                    .size(24.dp)
-                    .clickable(onClick = {}),
-                imageVector = Icons.Filled.Settings,
-                contentDescription = "Database",
-            )
-
-            Icon(
-                modifier = Modifier
-                    .size(24.dp)
+                    .size(32.dp)
                     .clickable(onClick = { onFavoriteClick() }),
                 imageVector = Icons.Filled.Favorite,
                 contentDescription = "Database",

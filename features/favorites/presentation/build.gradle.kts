@@ -7,6 +7,8 @@ android {
 }
 
 dependencies {
+    implementation(projects.features.favorites.domain)
+    implementation(projects.core.domain)
 
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.appcompat)

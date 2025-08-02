@@ -1,6 +1,6 @@
 package com.aktiia.features.search.presentation
 
-import com.aktiia.features.search.domain.PlaceData
+import com.aktiia.core.domain.PlaceData
 
 data class SearchState(
     val searchQuery: String = "",

@@ -5,7 +5,7 @@ import com.aktiia.core.domain.util.DataError
 import com.aktiia.core.domain.util.Result
 import com.aktiia.features.search.data.mapper.toPlacesData
 import com.aktiia.features.search.data.network.SearchApi
-import com.aktiia.features.search.domain.PlaceData
+import com.aktiia.core.domain.PlaceData
 import com.aktiia.features.search.domain.RemoteSearchDataSource
 import kotlin.coroutines.cancellation.CancellationException
 

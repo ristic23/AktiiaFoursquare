@@ -1,7 +1,7 @@
 package com.aktiia.core.database.mapper
 
 import com.aktiia.core.database.entity.PlaceEntity
-import com.aktiia.features.search.domain.PlaceData
+import com.aktiia.core.domain.PlaceData
 
 
 fun PlaceEntity.toPlaceData(): PlaceData = PlaceData(

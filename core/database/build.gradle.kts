@@ -10,6 +10,8 @@ android {
 dependencies {
     implementation(projects.core.domain)
     implementation(projects.features.search.domain)
+    implementation(projects.features.favorites.domain)
+    implementation(projects.features.details.domain)
 
     implementation(libs.bundles.koin)
     implementation(libs.androidx.core.ktx)

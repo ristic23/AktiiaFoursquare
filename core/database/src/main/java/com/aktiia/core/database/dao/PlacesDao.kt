@@ -4,16 +4,12 @@ import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
-import androidx.room.Upsert
 import com.aktiia.core.database.entity.PLACE_TABLE_NAME
 import com.aktiia.core.database.entity.PlaceEntity
 import kotlinx.coroutines.flow.Flow
 
 @Dao
 interface PlacesDao {
-
-    @Upsert
-    suspend fun upsertPlaces(placesEntity: List<PlaceEntity>)
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insert(place: PlaceEntity)
@@ -28,5 +24,5 @@ interface PlacesDao {
     suspend fun updateFavoriteStatus(id: String, isFavorite: Boolean)
 
     @Query("SELECT * FROM $PLACE_TABLE_NAME WHERE isFavorite = :isFavorite ORDER BY distance ASC")
-    fun getFavoritePlaces(isFavorite: Boolean = true): List<PlaceEntity>
+    fun getFavoritePlaces(isFavorite: Boolean = true): Flow<List<PlaceEntity>>
 }

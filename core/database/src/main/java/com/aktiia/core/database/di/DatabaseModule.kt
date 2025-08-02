@@ -2,7 +2,9 @@ package com.aktiia.core.database.di
 
 import androidx.room.Room
 import com.aktiia.core.database.PlacesDatabase
-import com.aktiia.core.database.RoomPlacesLocaleDataSource
+import com.aktiia.core.database.sources.RoomFavoritesLocaleDataSource
+import com.aktiia.core.database.sources.RoomSearchLocaleDataSource
+import com.aktiia.features.favorites.domain.LocaleFavoritesDataSource
 import com.aktiia.features.search.domain.LocaleSearchDataSource
 import org.koin.android.ext.koin.androidApplication
 import org.koin.core.module.dsl.singleOf
@@ -20,5 +22,6 @@ val databaseModule = module {
     single {
         get<PlacesDatabase>().placesDao
     }
-    singleOf(::RoomPlacesLocaleDataSource).bind<LocaleSearchDataSource>()
+    singleOf(::RoomSearchLocaleDataSource).bind<LocaleSearchDataSource>()
+    singleOf(::RoomFavoritesLocaleDataSource).bind<LocaleFavoritesDataSource>()
 }
