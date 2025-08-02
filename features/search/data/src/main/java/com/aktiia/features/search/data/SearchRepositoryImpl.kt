@@ -26,13 +26,14 @@ class SearchRepositoryImpl(
     override suspend fun search(
         query: String,
         ll: String
-    ): EmptyResult<DataError> {
+    ): Result<List<PlaceData>, DataError.Network> {
         return when (val result = remoteSearchDataSource.search(query, ll)) {
-            is Result.Error -> result.asEmptyDataResult()
+            is Result.Error -> result
             is Result.Success -> {
                 applicationScope.async {
-                    localeSearchDataSource.upsertPlaces(result.data).asEmptyDataResult()
+                    localeSearchDataSource.upsertPlaces(result.data)
                 }.await()
+                result
             }
         }
     }

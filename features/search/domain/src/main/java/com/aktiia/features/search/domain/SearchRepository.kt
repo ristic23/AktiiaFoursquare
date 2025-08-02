@@ -2,7 +2,6 @@ package com.aktiia.features.search.domain
 
 import com.aktiia.core.domain.PlaceData
 import com.aktiia.core.domain.util.DataError
-import com.aktiia.core.domain.util.EmptyResult
 import com.aktiia.core.domain.util.Result
 import kotlinx.coroutines.flow.Flow
 
@@ -13,7 +12,7 @@ interface SearchRepository {
     suspend fun search(
         query: String,
         ll: String,
-    ): EmptyResult<DataError>
+    ): Result<List<PlaceData>, DataError.Network>
 
     suspend fun updateFavoriteStatus(id: String, isFavorite: Boolean): Result<PlaceId, DataError.Local>
 }

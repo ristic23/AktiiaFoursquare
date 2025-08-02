@@ -5,8 +5,10 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.aktiia.core.domain.util.Result
 import com.aktiia.features.search.domain.SearchRepository
 import com.aktiia.features.search.presentation.SearchAction.OnFavoriteClick
+import com.aktiia.features.search.presentation.SearchAction.OnSearchClear
 import com.aktiia.features.search.presentation.SearchAction.OnSearchClick
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
@@ -21,7 +23,9 @@ class SearchViewModel(
 
     init {
         searchRepository.getPlaces().onEach { places ->
-            state = state.copy(searchResult = places)
+            state = state.copy(
+                allCachedPlaces = places,
+            )
         }.launchIn(viewModelScope)
     }
 
@@ -29,10 +33,27 @@ class SearchViewModel(
         when (action) {
             is OnSearchClick -> {
                 viewModelScope.launch {
-                    searchRepository.search(
+                    state = state.copy(
+                        isLoading = true,
+                        isEmptyResult = false,
+                        isErrorResult = false,
+                        showCachedPlaces = false,
+                        )
+                    when (val result =searchRepository.search(
                         query = action.query,
                         ll = "43.3209,21.8958", // Nis
-                    )
+                    )) {
+                        is Result.Error -> {
+                            state = state.copy(isErrorResult = true)
+                        }
+                        is Result.Success -> {
+                            state = state.copy(
+                                searchPlaces = result.data,
+                                isEmptyResult = result.data.isEmpty()
+                            )
+                        }
+                    }
+                    state = state.copy(isLoading = false)
                 }
             }
             is OnFavoriteClick -> {
@@ -42,6 +63,10 @@ class SearchViewModel(
                         isFavorite = action.isFavorite
                     )
                 }
+            }
+
+            OnSearchClear -> {
+                state = state.copy(showCachedPlaces = true)
             }
         }
     }
