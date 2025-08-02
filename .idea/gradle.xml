@@ -36,17 +36,14 @@
             <option value="$PROJECT_DIR$/features/details" />
             <option value="$PROJECT_DIR$/features/details/data" />
             <option value="$PROJECT_DIR$/features/details/domain" />
-            <option value="$PROJECT_DIR$/features/details/network" />
             <option value="$PROJECT_DIR$/features/details/presentation" />
             <option value="$PROJECT_DIR$/features/favorites" />
             <option value="$PROJECT_DIR$/features/favorites/data" />
             <option value="$PROJECT_DIR$/features/favorites/domain" />
-            <option value="$PROJECT_DIR$/features/favorites/network" />
             <option value="$PROJECT_DIR$/features/favorites/presentation" />
             <option value="$PROJECT_DIR$/features/search" />
             <option value="$PROJECT_DIR$/features/search/data" />
             <option value="$PROJECT_DIR$/features/search/domain" />
-            <option value="$PROJECT_DIR$/features/search/network" />
             <option value="$PROJECT_DIR$/features/search/presentation" />
           </set>
         </option>

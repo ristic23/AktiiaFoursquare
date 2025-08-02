@@ -6,7 +6,10 @@
       <module name="AktiiaFoursquare.build-logic.convention.main" target="11" />
       <module name="AktiiaFoursquare.build-logic.convention.test" target="11" />
       <module name="AktiiaFoursquare.features.details.main" target="11" />
+      <module name="AktiiaFoursquare.features.details.network" target="21" />
       <module name="AktiiaFoursquare.features.details.test" target="11" />
+      <module name="AktiiaFoursquare.features.favorites.network" target="21" />
+      <module name="AktiiaFoursquare.features.search.network" target="21" />
     </bytecodeTargetLevel>
   </component>
 </project>

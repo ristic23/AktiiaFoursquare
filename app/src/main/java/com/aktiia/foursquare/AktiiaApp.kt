@@ -1,8 +1,10 @@
 package com.aktiia.foursquare
 
 import android.app.Application
+import com.aktiia.features.search.data.di.searchRepositoryModule
 import com.aktiia.features.search.presentation.di.searchViewModelModule
 import com.aktiia.foursquare.di.appModule
+import com.aktiia.foursquare.di.networkModule
 import org.koin.android.ext.koin.androidContext
 import org.koin.android.ext.koin.androidLogger
 import org.koin.core.context.startKoin
@@ -18,6 +20,8 @@ class AktiiaApp: Application() {
             modules(
                 appModule,
                 searchViewModelModule,
+                networkModule,
+                searchRepositoryModule,
             )
         }
     }

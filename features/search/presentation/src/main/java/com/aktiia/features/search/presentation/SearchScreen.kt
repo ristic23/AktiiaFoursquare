@@ -29,6 +29,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.aktiia.core.presentation.designsystem.PlaceItem
 import com.aktiia.features.search.presentation.SearchAction.OnPlaceClick
+import com.aktiia.features.search.presentation.SearchAction.OnSearchClick
 import org.koin.androidx.compose.koinViewModel
 
 @Composable
@@ -66,7 +67,10 @@ private fun SearchScreen(
                 .fillMaxWidth(),
             query = searchQuery,
             onQueryChange = { searchQuery = it },
-            onSearch = { active = false },
+            onSearch = {
+                active = false
+                onAction(OnSearchClick(searchQuery))
+            },
             active = active,
             onActiveChange = { /*active = it*/ },
             placeholder = { Text("Search") },
