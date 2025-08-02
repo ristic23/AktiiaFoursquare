@@ -15,7 +15,6 @@ import com.aktiia.foursquare.ui.theme.AktiiaFoursquareTheme
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        enableEdgeToEdge()
         setContent {
             AktiiaFoursquareTheme {
                 Surface(

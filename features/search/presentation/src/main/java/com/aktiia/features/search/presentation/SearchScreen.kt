@@ -60,8 +60,6 @@ private fun SearchScreen(
         var searchQuery by remember { mutableStateOf("") }
         var active by remember { mutableStateOf(false) }
 
-        var places by remember { mutableStateOf(listOf<String>("bla", "bla 2")) }
-
         SearchBar(
             modifier = Modifier
                 .fillMaxWidth(),
@@ -102,12 +100,13 @@ private fun SearchScreen(
         LazyColumn(
             modifier = Modifier.fillMaxSize()
         ) {
-            items(places.size) { index ->
+            items(state.searchResult.size) { index ->
+                val item = state.searchResult[index]
                 PlaceItem(
                     modifier = Modifier
                         .fillMaxWidth()
                         .padding(4.dp),
-                    placeName = places[index],
+                    placeName = item.name,
                     onClick = { onAction(OnPlaceClick) }
                 )
             }

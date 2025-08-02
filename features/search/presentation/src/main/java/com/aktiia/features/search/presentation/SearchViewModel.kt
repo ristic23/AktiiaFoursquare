@@ -8,6 +8,8 @@ import androidx.lifecycle.viewModelScope
 import com.aktiia.features.search.domain.SearchRepository
 import com.aktiia.features.search.presentation.SearchAction.OnPlaceClick
 import com.aktiia.features.search.presentation.SearchAction.OnSearchClick
+import kotlinx.coroutines.flow.launchIn
+import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
 
 class SearchViewModel(
@@ -18,7 +20,9 @@ class SearchViewModel(
         private set
 
     init {
-        
+        searchRepository.getPlaces().onEach { places ->
+            state = state.copy(searchResult = places)
+        }.launchIn(viewModelScope)
     }
 
     fun onAction(action: SearchAction) {

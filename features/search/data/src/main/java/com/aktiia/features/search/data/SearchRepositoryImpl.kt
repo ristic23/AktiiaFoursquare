@@ -7,6 +7,7 @@ import com.aktiia.features.search.domain.SearchRepository
 import com.aktiia.core.domain.util.Result
 import com.aktiia.core.domain.util.asEmptyDataResult
 import com.aktiia.features.search.domain.PlaceData
+import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -17,6 +18,10 @@ class SearchRepositoryImpl(
 
     private val _places = MutableStateFlow<List<PlaceData>>(emptyList())
     val places: StateFlow<List<PlaceData>> = _places.asStateFlow()
+
+    override fun getPlaces(): Flow<List<PlaceData>> {
+        return places
+    }
 
     override suspend fun search(
         query: String,
