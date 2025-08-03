@@ -1,4 +1,4 @@
-package com.aktiia.core.presentation.ui
+package com.aktiia.core.location
 
 import org.junit.Test
 

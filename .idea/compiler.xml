@@ -5,6 +5,7 @@
       <module name="AktiiaFoursquare.build-logic.convention" target="11" />
       <module name="AktiiaFoursquare.build-logic.convention.main" target="11" />
       <module name="AktiiaFoursquare.build-logic.convention.test" target="11" />
+      <module name="AktiiaFoursquare.core.presentation.ui" target="21" />
       <module name="AktiiaFoursquare.features.details.main" target="11" />
       <module name="AktiiaFoursquare.features.details.network" target="21" />
       <module name="AktiiaFoursquare.features.details.test" target="11" />
