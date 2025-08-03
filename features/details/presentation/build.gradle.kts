@@ -11,6 +11,7 @@ dependencies {
     implementation(projects.features.details.domain)
 
     implementation(libs.androidx.core.ktx)
+    implementation(libs.coil.compose)
     implementation(libs.androidx.appcompat)
     implementation(libs.material)
     testImplementation(libs.junit)

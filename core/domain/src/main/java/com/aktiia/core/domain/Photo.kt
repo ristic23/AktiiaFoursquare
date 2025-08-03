@@ -6,4 +6,6 @@ data class Photo(
     val suffix: String,
     val width: Int,
     val height: Int,
-)
+) {
+    val url = "${prefix}500x500$suffix"
+}
