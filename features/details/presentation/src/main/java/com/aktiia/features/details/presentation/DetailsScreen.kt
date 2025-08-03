@@ -20,6 +20,9 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
+import androidx.compose.material.icons.filled.Close
+import androidx.compose.material.icons.filled.Search
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
@@ -44,6 +47,7 @@ import com.aktiia.core.domain.PlaceDetailsData
 import com.aktiia.core.domain.details.HoursOpen
 import com.aktiia.core.domain.util.getOrNA
 import com.aktiia.core.presentation.designsystem.FavoriteIcon
+import com.aktiia.core.presentation.designsystem.WarningScreenState
 import com.aktiia.core.presentation.designsystem.buildPrefixedText
 import org.koin.androidx.compose.koinViewModel
 
@@ -116,131 +120,155 @@ private fun DetailsScreen(
                 }
             )
         }
-        Text(
-            text = state.item?.name ?: "",
-            modifier = Modifier
-                .align(Alignment.CenterHorizontally)
-                .padding(top = 8.dp, bottom = 16.dp),
-            textAlign = TextAlign.Center,
-            style = MaterialTheme.typography.headlineLarge,
-            fontWeight = FontWeight.Bold
-        )
-
-        LazyRow(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(bottom = 8.dp),
-            contentPadding = PaddingValues(horizontal = 8.dp),
-            horizontalArrangement = Arrangement.spacedBy(8.dp)
-        ) {
-            items(state.item?.photos?.size ?: 0) { index ->
-                val item = state.item?.photos[index]
-                AsyncImage(
+        when {
+            state.isLoading -> {
+                CircularProgressIndicator(
                     modifier = Modifier
-                        .width(160.dp)
-                        .height(160.dp)
-                        .clip(RoundedCornerShape(8.dp)),
-                    model = ImageRequest.Builder(LocalContext.current)
-                        .data(item?.url ?: "")
-                        .crossfade(true)
-                        .build(),
-                    contentDescription = "Place Photo",
-                    contentScale = ContentScale.FillBounds,
-                    placeholder = painterResource(R.drawable.placeholder),
-                    error = painterResource(R.drawable.error_placeholder),
+                        .size(48.dp)
+                        .align(Alignment.CenterHorizontally),
+                    color = Color.DarkGray,
+                    strokeWidth = 3.dp,
+                )
+            }
+
+            state.isErrorResult -> {
+                WarningScreenState(
+                    modifier = Modifier
+                        .fillMaxSize(),
+                    icon = Icons.Filled.Close,
+                    title = stringResource(R.string.emptyResultTitle),
+                    message = stringResource(R.string.emptyResultMessage),
+                )
+            }
+
+            else -> {
+                Text(
+                    text = state.item?.name ?: "",
+                    modifier = Modifier
+                        .align(Alignment.CenterHorizontally)
+                        .padding(top = 8.dp, bottom = 16.dp),
+                    textAlign = TextAlign.Center,
+                    style = MaterialTheme.typography.headlineLarge,
+                    fontWeight = FontWeight.Bold
+                )
+
+                LazyRow(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(bottom = 8.dp),
+                    contentPadding = PaddingValues(horizontal = 8.dp),
+                    horizontalArrangement = Arrangement.spacedBy(8.dp)
+                ) {
+                    items(state.item?.photos?.size ?: 0) { index ->
+                        val item = state.item?.photos[index]
+                        AsyncImage(
+                            modifier = Modifier
+                                .width(160.dp)
+                                .height(160.dp)
+                                .clip(RoundedCornerShape(8.dp)),
+                            model = ImageRequest.Builder(LocalContext.current)
+                                .data(item?.url ?: "")
+                                .crossfade(true)
+                                .build(),
+                            contentDescription = "Place Photo",
+                            contentScale = ContentScale.FillBounds,
+                            placeholder = painterResource(R.drawable.placeholder),
+                            error = painterResource(R.drawable.error_placeholder),
+                        )
+                    }
+                }
+
+                Text(
+                    text = state.item?.description ?: stringResource(R.string.descEmpty),
+                    modifier = Modifier
+                        .align(Alignment.CenterHorizontally)
+                        .padding(bottom = 8.dp),
+                    style = MaterialTheme.typography.titleMedium
+                )
+                Text(
+                    text = buildPrefixedText(
+                        prefix = stringResource(R.string.telPrefix),
+                        value = state.item?.tel.getOrNA(),
+                        textColor = textColor
+                    ),
+                    modifier = Modifier
+                        .padding(bottom = 4.dp),
+                    style = MaterialTheme.typography.titleMedium
+                )
+                Text(
+                    text = buildPrefixedText(
+                        prefix = stringResource(R.string.websitePrefix),
+                        value = state.item?.website.getOrNA(),
+                        textColor = textColor
+                    ),
+                    modifier = Modifier
+                        .padding(bottom = 4.dp)
+                        .clickable {
+                            state.item?.website?.let { url ->
+                                val intent = Intent(Intent.ACTION_VIEW, Uri.parse(url))
+                                context.startActivity(intent)
+                            }
+                        },
+                    style = MaterialTheme.typography.titleMedium,
+                )
+                Text(
+                    text = buildPrefixedText(
+                        prefix = stringResource(R.string.hoursPrefix),
+                        value = state.item?.hours?.display.getOrNA(),
+                        textColor = textColor
+                    ),
+                    modifier = Modifier
+                        .padding(bottom = 4.dp),
+                    style = MaterialTheme.typography.titleMedium
+                )
+                Text(
+                    text = buildPrefixedText(
+                        prefix = stringResource(R.string.isOpenPrefix),
+                        value = stringResource(
+                            if (state.item?.hours?.isOpen == true) {
+                                R.string.open
+                            } else {
+                                R.string.closed
+                            }
+                        ),
+                        textColor = textColor
+                    ),
+                    modifier = Modifier
+                        .padding(bottom = 4.dp),
+                    style = MaterialTheme.typography.titleMedium
+                )
+                Text(
+                    text = buildPrefixedText(
+                        prefix = stringResource(R.string.ratingPrefix),
+                        value = (state.item?.rating ?: 0.0).toString(),
+                        textColor = textColor
+                    ),
+                    modifier = Modifier
+                        .padding(bottom = 4.dp),
+                    style = MaterialTheme.typography.titleMedium
+                )
+                Text(
+                    text = buildPrefixedText(
+                        prefix = stringResource(R.string.distancePrefix),
+                        value = state.item?.distance.getOrNA(),
+                        textColor = textColor
+                    ),
+                    modifier = Modifier
+                        .padding(bottom = 4.dp),
+                    style = MaterialTheme.typography.titleMedium
+                )
+                Text(
+                    text = buildPrefixedText(
+                        prefix = stringResource(R.string.addressPrefix),
+                        value = state.item?.address.getOrNA(),
+                        textColor = textColor
+                    ),
+                    modifier = Modifier
+                        .padding(bottom = 4.dp),
+                    style = MaterialTheme.typography.titleMedium
                 )
             }
         }
-
-        Text(
-            text = state.item?.description ?: stringResource(R.string.descEmpty),
-            modifier = Modifier
-                .align(Alignment.CenterHorizontally)
-                .padding(bottom = 8.dp),
-            style = MaterialTheme.typography.titleMedium
-        )
-        Text(
-            text = buildPrefixedText(
-                prefix = stringResource(R.string.telPrefix),
-                value = state.item?.tel.getOrNA(),
-                textColor = textColor
-            ),
-            modifier = Modifier
-                .padding(bottom = 4.dp),
-            style = MaterialTheme.typography.titleMedium
-        )
-        Text(
-            text = buildPrefixedText(
-                prefix = stringResource(R.string.websitePrefix),
-                value = state.item?.website.getOrNA(),
-                textColor = textColor
-            ),
-            modifier = Modifier
-                .padding(bottom = 4.dp)
-                .clickable {
-                    state.item?.website?.let { url ->
-                        val intent = Intent(Intent.ACTION_VIEW, Uri.parse(url))
-                        context.startActivity(intent)
-                    }
-                },
-            style = MaterialTheme.typography.titleMedium,
-        )
-        Text(
-            text = buildPrefixedText(
-                prefix = stringResource(R.string.hoursPrefix),
-                value = state.item?.hours?.display.getOrNA(),
-                textColor = textColor
-            ),
-            modifier = Modifier
-                .padding(bottom = 4.dp),
-            style = MaterialTheme.typography.titleMedium
-        )
-        Text(
-            text = buildPrefixedText(
-                prefix = stringResource(R.string.isOpenPrefix),
-                value = stringResource(
-                    if (state.item?.hours?.isOpen == true) {
-                        R.string.open
-                    } else {
-                        R.string.closed
-                    }
-                ),
-                textColor = textColor
-            ),
-            modifier = Modifier
-                .padding(bottom = 4.dp),
-            style = MaterialTheme.typography.titleMedium
-        )
-        Text(
-            text = buildPrefixedText(
-                prefix = stringResource(R.string.ratingPrefix),
-                value = (state.item?.rating ?: 0.0).toString(),
-                textColor = textColor
-            ),
-            modifier = Modifier
-                .padding(bottom = 4.dp),
-            style = MaterialTheme.typography.titleMedium
-        )
-        Text(
-            text = buildPrefixedText(
-                prefix = stringResource(R.string.distancePrefix),
-                value = state.item?.distance.getOrNA(),
-                textColor = textColor
-            ),
-            modifier = Modifier
-                .padding(bottom = 4.dp),
-            style = MaterialTheme.typography.titleMedium
-        )
-        Text(
-            text = buildPrefixedText(
-                prefix = stringResource(R.string.addressPrefix),
-                value = state.item?.address.getOrNA(),
-                textColor = textColor
-            ),
-            modifier = Modifier
-                .padding(bottom = 4.dp),
-            style = MaterialTheme.typography.titleMedium
-        )
     }
 }
 

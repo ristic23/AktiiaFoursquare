@@ -1,7 +1,7 @@
 package com.aktiia.core.database.sources
 
 import android.database.sqlite.SQLiteFullException
-import com.aktiia.core.database.dao.PlacesDao
+import com.aktiia.core.database.dao.SearchDao
 import com.aktiia.core.database.mapper.toPlaceData
 import com.aktiia.core.domain.PlaceData
 import com.aktiia.core.domain.util.DataError
@@ -12,7 +12,7 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 
 class RoomFavoritesLocaleDataSource(
-    private val placesDao: PlacesDao
+    private val placesDao: SearchDao
 ): LocaleFavoritesDataSource {
     override suspend fun removeFavoriteStatus(id: String): Result<PlaceId, DataError.Local> {
         return try {

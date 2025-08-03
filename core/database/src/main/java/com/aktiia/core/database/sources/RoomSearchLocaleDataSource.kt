@@ -1,7 +1,7 @@
 package com.aktiia.core.database.sources
 
 import android.database.sqlite.SQLiteFullException
-import com.aktiia.core.database.dao.PlacesDao
+import com.aktiia.core.database.dao.SearchDao
 import com.aktiia.core.database.mapper.toPlaceData
 import com.aktiia.core.database.mapper.toPlaceEntity
 import com.aktiia.core.domain.util.DataError
@@ -13,19 +13,13 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 
 class RoomSearchLocaleDataSource(
-    private val placesDao: PlacesDao
+    private val placesDao: SearchDao
 ): LocaleSearchDataSource {
     override suspend fun upsertPlaces(places: List<PlaceData>): Result<List<PlaceId>, DataError.Local> {
         return try {
-            places.forEach { newPlace ->
-                val existing = placesDao.getPlaceById(newPlace.id)
-                val placeToInsert = if (existing != null) {
-                    newPlace.copy(isFavorite = existing.isFavorite)
-                } else {
-                    newPlace
-                }
-                placesDao.insert(placeToInsert.toPlaceEntity())
-            }
+            placesDao.upsertAll(
+                places.map { it.toPlaceEntity() }
+            )
             Result.Success(places.map { it.id })
         } catch (e: SQLiteFullException) {
             Result.Error(DataError.Local.DISK_FULL)

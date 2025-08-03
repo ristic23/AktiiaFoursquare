@@ -11,4 +11,6 @@
     <string name="distancePrefix">Distance:</string>
     <string name="addressPrefix">Address:</string>
     <string name="detailsScreenTitle">Place Details</string>
+    <string name="emptyResultTitle">Error</string>
+    <string name="emptyResultMessage">Error occurred, please check internet connection and try again</string>
 </resources>

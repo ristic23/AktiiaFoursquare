@@ -5,7 +5,7 @@
     <string name="emptyResultTitle">No result</string>
     <string name="emptyResultMessage">Try with different search</string>
     <string name="errorResultTitle">Error</string>
-    <string name="errorResultMessage">Error occured, please check internet connection and try again</string>
+    <string name="errorResultMessage">Error occurred, please check internet connection and try again</string>
     <string name="allIsEmptyTitle">Hello</string>
     <string name="allIsEmptyMessage">Start with using search at the top of the screen</string>
     <string name="search">Search</string>

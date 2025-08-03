@@ -1,6 +1,7 @@
 plugins {
     alias(libs.plugins.aktiia.android.library)
     alias(libs.plugins.aktiia.android.room)
+    kotlin("plugin.serialization")
 }
 
 android {
@@ -14,6 +15,7 @@ dependencies {
     implementation(projects.features.details.domain)
 
     implementation(libs.bundles.koin)
+    implementation(libs.kotlinx.serialization.json)
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.appcompat)
     implementation(libs.material)

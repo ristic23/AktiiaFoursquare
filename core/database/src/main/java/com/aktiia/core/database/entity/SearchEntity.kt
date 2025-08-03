@@ -4,9 +4,9 @@ import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 
-const val PLACE_TABLE_NAME = "PlacesTable"
+const val SEARCH_TABLE_NAME = "PlacesTable"
 
-@Entity(tableName = PLACE_TABLE_NAME)
+@Entity(tableName = SEARCH_TABLE_NAME)
 data class SearchEntity (
     @PrimaryKey(autoGenerate = false)
     @ColumnInfo(name = "fsq_id")

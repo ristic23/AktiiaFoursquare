@@ -4,12 +4,16 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.compose.runtime.getValue
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
+import androidx.lifecycle.viewmodel.compose.viewModel
 import com.aktiia.core.domain.util.Result
 import com.aktiia.features.details.domain.DetailsRepository
+import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.launch
 
 class DetailsViewModel(
     private val detailsRepository: DetailsRepository
-): ViewModel() {
+) : ViewModel() {
 
     var state by mutableStateOf(DetailsState())
         private set
@@ -24,14 +28,26 @@ class DetailsViewModel(
         }
     }
 
-    suspend fun fetchPlace(placeId: String) {
-        when (val result = detailsRepository.fetchDetails(placeId)) {
-            is Result.Error -> {
-                // todo
-            }
-            is Result.Success -> {
-                state = state.copy(item = result.data)
-            }
+    fun fetchPlace(placeId: String) {
+        viewModelScope.launch {
+            detailsRepository.fetchDetails(placeId)
+                .collectLatest { result ->
+                    state = when (result) {
+                        is Result.Error -> {
+                            state.copy(
+                                isErrorResult = true,
+                                isLoading = false
+                            )
+                        }
+
+                        is Result.Success -> {
+                            state.copy(
+                                item = result.data,
+                                isLoading = false
+                            )
+                        }
+                    }
+                }
         }
     }
 }
