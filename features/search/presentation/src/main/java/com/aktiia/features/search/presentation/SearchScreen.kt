@@ -8,6 +8,7 @@ import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.ColumnScope
 import androidx.compose.foundation.layout.Row
@@ -51,6 +52,7 @@ import com.aktiia.core.presentation.designsystem.AktiiaDialog
 import com.aktiia.core.presentation.designsystem.AktiiaOutlinedActionButton
 import com.aktiia.core.presentation.designsystem.PlaceItem
 import com.aktiia.core.presentation.designsystem.WarningScreenState
+import com.aktiia.core.presentation.designsystem.theme.AktiiaFoursquareTheme
 import com.aktiia.core.presentation.designsystem.util.hasLocationPermission
 import com.aktiia.core.presentation.designsystem.util.shouldShowLocationPermissionRationale
 import com.aktiia.features.search.presentation.SearchAction.DismissRationaleDialog
@@ -93,15 +95,11 @@ private fun SearchScreen(
     val permissionLauncher = rememberLauncherForActivityResult(
         contract = ActivityResultContracts.RequestMultiplePermissions()
     ) { perms ->
-        val hasCourseLocationPermission = perms[Manifest.permission.ACCESS_COARSE_LOCATION] == true
-        val hasFineLocationPermission = perms[Manifest.permission.ACCESS_FINE_LOCATION] == true
-
         val activity = context as ComponentActivity
         val showLocationRationale = activity.shouldShowLocationPermissionRationale()
 
         onAction(
             SubmitLocationPermissionInfo(
-                acceptedLocationPermission = hasCourseLocationPermission && hasFineLocationPermission,
                 showLocationRationale = showLocationRationale
             )
         )
@@ -112,7 +110,6 @@ private fun SearchScreen(
 
         onAction(
             SubmitLocationPermissionInfo(
-                acceptedLocationPermission = context.hasLocationPermission(),
                 showLocationRationale = showLocationRationale
             )
         )
@@ -125,18 +122,40 @@ private fun SearchScreen(
     Column(
         modifier = Modifier
             .fillMaxSize()
-            .background(Color.LightGray)
+            .background(MaterialTheme.colorScheme.background)
     ) {
         var active by rememberSaveable { mutableStateOf(false) }
-        val toolbarColor = Color(0xFF1976D2)
+
+        if (state.isWarningBannerVisible) {
+            Box(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .height(24.dp)
+                    .background(MaterialTheme.colorScheme.error),
+                contentAlignment = Alignment.Center
+            ) {
+                Text(
+                    text = stringResource(
+                        id = if (!state.isLocationPermissionGranted) {
+                            R.string.locationPermissionNeeded
+                        } else {
+                            R.string.locationDisabled
+                        }
+                    ),
+                    modifier = Modifier,
+                    style = MaterialTheme.typography.titleSmall,
+                    color = MaterialTheme.colorScheme.onSurface
+                )
+            }
+        }
 
         Row(
             modifier = Modifier
                 .fillMaxWidth()
-                .background(toolbarColor),
+                .background(MaterialTheme.colorScheme.onSecondaryContainer),
             verticalAlignment = Alignment.CenterVertically
         ) {
-            val contentColor = Color.White
+            val contentColor = MaterialTheme.colorScheme.onSurface
             SearchBar(
                 modifier = Modifier
                     .weight(1f),
@@ -221,7 +240,7 @@ private fun SearchScreen(
             state.isLoading -> {
                 CircularProgressIndicator(
                     modifier = Modifier.size(48.dp),
-                    color = Color.DarkGray,
+                    color = MaterialTheme.colorScheme.onSurface,
                     strokeWidth = 3.dp,
                 )
             }
@@ -270,7 +289,6 @@ private fun SearchScreen(
             primaryButton = {
                 AktiiaOutlinedActionButton(
                     text = stringResource(id = R.string.okay),
-                    isLoading = false,
                     onClick = {
                         onAction(DismissRationaleDialog)
                         permissionLauncher.requestPermissions(context)
@@ -298,7 +316,8 @@ private fun ColumnScope.PlacesList(
         modifier = Modifier
             .padding(vertical = 4.dp)
             .align(Alignment.CenterHorizontally),
-        style = MaterialTheme.typography.titleSmall
+        style = MaterialTheme.typography.titleSmall,
+        color = MaterialTheme.colorScheme.onSurface
     )
 
     Spacer(modifier = Modifier.height(8.dp))
@@ -353,12 +372,17 @@ private fun ActivityResultLauncher<Array<String>>.requestPermissions(
 @Preview
 @Composable
 private fun SearchScreenPreview() {
-    SearchScreen(
-        state = SearchState(),
-        searchQuery = "",
-        onAction = {},
-        onPlaceClick = {},
-        onFavoriteClick = {},
-        onQueryChange = {},
-    )
+    AktiiaFoursquareTheme {
+        SearchScreen(
+            state = SearchState(
+                isLocationEnabled = true,
+                isLocationPermissionGranted = false
+            ),
+            searchQuery = "",
+            onAction = {},
+            onPlaceClick = {},
+            onFavoriteClick = {},
+            onQueryChange = {},
+        )
+    }
 }

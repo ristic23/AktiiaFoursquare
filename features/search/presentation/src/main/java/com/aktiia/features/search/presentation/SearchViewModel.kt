@@ -81,6 +81,7 @@ class SearchViewModel(
     }
 
     fun onAction(action: SearchAction) {
+        checkWarningBanner()
         when (action) {
             is OnSearchClick -> {
                 viewModelScope.launch {
@@ -121,12 +122,20 @@ class SearchViewModel(
                 )
             }
             is SubmitLocationPermissionInfo -> {
-//                hasLocationPermission.value = action.acceptedLocationPermission
                 state = state.copy(
                     showLocationRationale = action.showLocationRationale
                 )
             }
         }
+    }
+
+    private fun checkWarningBanner() {
+        val isLocationPermissionGranted = locationProvider.checkPermission()
+        val isLocationEnabled = locationProvider.hasLocationEnabled()
+        state = state.copy(
+            isLocationEnabled = isLocationEnabled,
+            isLocationPermissionGranted = isLocationPermissionGranted
+        )
     }
 
     fun onQueryChange(newQuery: String) {

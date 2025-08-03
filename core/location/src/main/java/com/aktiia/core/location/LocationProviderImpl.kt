@@ -57,13 +57,13 @@ class LocationProviderImpl(
         }
     }
 
-    private fun checkPermission(): Boolean =
+    override fun checkPermission(): Boolean =
         ActivityCompat.checkSelfPermission(context, Manifest.permission.ACCESS_FINE_LOCATION) ==
                 PackageManager.PERMISSION_GRANTED ||
                 ActivityCompat.checkSelfPermission(context, Manifest.permission.ACCESS_COARSE_LOCATION) ==
                 PackageManager.PERMISSION_GRANTED
 
-    private fun hasLocationEnabled(): Boolean {
+    override fun hasLocationEnabled(): Boolean {
         val locationManager = context.getSystemService<LocationManager>()!!
         return locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER) ||
                 locationManager.isProviderEnabled(LocationManager.NETWORK_PROVIDER)

@@ -1,5 +1,6 @@
 package com.aktiia.core.presentation.designsystem
 
+import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -15,6 +16,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.aktiia.core.presentation.designsystem.theme.AktiiaFoursquareTheme
 
 @Composable
 fun PlaceItem(
@@ -26,69 +28,71 @@ fun PlaceItem(
     onFavoriteClick: (Boolean) -> Unit,
     onItemClick: () -> Unit
 ) {
-    Card(
+    Box(
         modifier = modifier
-            .clickable { onItemClick() },
-        elevation = CardDefaults.cardElevation(defaultElevation = 4.dp),
-        shape = RoundedCornerShape(12.dp)
+            .clickable { onItemClick() }
+            .background(
+                color = MaterialTheme.colorScheme.onSecondaryContainer,
+                shape = RoundedCornerShape(12.dp),
+            ),
     ) {
-        Box(
-            modifier = Modifier
-                .fillMaxWidth()
-        ) {
-            Column {
-                Text(
-                    text = placeName,
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(vertical = 16.dp)
-                        .padding(start = 16.dp, end = 40.dp),
-                    style = MaterialTheme.typography.titleLarge
-                )
-                if (distance.isNotBlank()) {
-                    Text(
-                        text = distance,
-                        modifier = Modifier
-                            .padding(horizontal = 16.dp)
-                            .padding(vertical = 4.dp),
-                        style = MaterialTheme.typography.titleSmall
-                    )
-                }
-                if (address.isNotBlank()) {
-                    Text(
-                        text = address,
-                        modifier = Modifier
-                            .padding(horizontal = 16.dp)
-                            .padding(top = 4.dp, bottom = 16.dp),
-                        style = MaterialTheme.typography.titleSmall
-                    )
-                }
-            }
-            FavoriteIcon(
+        Column {
+            Text(
+                text = placeName,
                 modifier = Modifier
-                    .align(Alignment.TopEnd)
-                    .padding(top = 16.dp, end = 16.dp),
-                isFavorite = isFavorite,
-                onClick = {
-                    onFavoriteClick(!isFavorite)
-                }
+                    .fillMaxWidth()
+                    .padding(vertical = 16.dp)
+                    .padding(start = 16.dp, end = 40.dp),
+                style = MaterialTheme.typography.titleLarge,
+                color = MaterialTheme.colorScheme.onSurface
             )
+            if (distance.isNotBlank()) {
+                Text(
+                    text = distance,
+                    modifier = Modifier
+                        .padding(horizontal = 16.dp)
+                        .padding(vertical = 4.dp),
+                    style = MaterialTheme.typography.titleSmall,
+                    color = MaterialTheme.colorScheme.onSurface
+                )
+            }
+            if (address.isNotBlank()) {
+                Text(
+                    text = address,
+                    modifier = Modifier
+                        .padding(horizontal = 16.dp)
+                        .padding(top = 4.dp, bottom = 16.dp),
+                    style = MaterialTheme.typography.titleSmall,
+                    color = MaterialTheme.colorScheme.onSurface
+                )
+            }
         }
+        FavoriteIcon(
+            modifier = Modifier
+                .align(Alignment.TopEnd)
+                .padding(top = 16.dp, end = 16.dp),
+            isFavorite = isFavorite,
+            onClick = {
+                onFavoriteClick(!isFavorite)
+            }
+        )
     }
 }
 
 @Preview
 @Composable
 private fun PlaceItemPreview() {
-    PlaceItem(
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(8.dp),
-        placeName = "Nemir",
-        distance = "400m",
-        address = "Trg 14 Oktobar, 2/4",
-        isFavorite = false,
-        onFavoriteClick = {},
-        onItemClick = {},
-    )
+    AktiiaFoursquareTheme {
+        PlaceItem(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(8.dp),
+            placeName = "Nemir",
+            distance = "400m",
+            address = "Trg 14 Oktobar, 2/4",
+            isFavorite = false,
+            onFavoriteClick = {},
+            onItemClick = {},
+        )
+    }
 }

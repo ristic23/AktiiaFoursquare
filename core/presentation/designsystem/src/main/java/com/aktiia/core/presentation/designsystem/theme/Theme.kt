@@ -19,6 +19,7 @@ val DarkColorScheme = darkColorScheme(
     onBackground = AktiiaWhite,
     onSurface = AktiiaWhite,
     onSurfaceVariant = AktiiaGray,
+    onSecondaryContainer = AktiiaLightDark,
     error = AktiiaDarkRed,
     errorContainer = AktiiaDarkRed5
 )

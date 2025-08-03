@@ -12,6 +12,10 @@ data class SearchState(
     val isErrorResult: Boolean = false,
     val showCachedPlaces: Boolean = true,
     val showLocationRationale: Boolean = false,
+    val isLocationEnabled: Boolean = false,
+    val isLocationPermissionGranted: Boolean = false,
 ) {
     val allIsEmpty: Boolean = searchPlaces.isEmpty() && allCachedPlaces.isEmpty()
+
+    val isWarningBannerVisible: Boolean = !isLocationEnabled || !isLocationPermissionGranted
 }
