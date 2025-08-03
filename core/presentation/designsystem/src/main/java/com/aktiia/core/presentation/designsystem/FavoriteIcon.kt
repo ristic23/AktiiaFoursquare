@@ -10,17 +10,19 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 
 @Composable
 fun FavoriteIcon(
     modifier: Modifier = Modifier,
     isFavorite: Boolean,
+    size: Dp = 24.dp,
     onClick: () -> Unit
 ) {
     Icon(
         modifier = modifier
-            .size(24.dp)
+            .size(size)
             .clickable(onClick = onClick),
         imageVector = if (isFavorite) Icons.Filled.Favorite else Icons.Outlined.FavoriteBorder,
         contentDescription = if (isFavorite) "Unfavorite" else "Favorite",

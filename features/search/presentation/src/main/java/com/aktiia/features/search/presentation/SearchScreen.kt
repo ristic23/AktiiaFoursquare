@@ -74,12 +74,12 @@ private fun SearchScreen(
     ) {
         var searchQuery by remember { mutableStateOf("") }
         var active by remember { mutableStateOf(false) }
-        val backgroundColor = Color(0xFF1976D2)
+        val toolbarColor = Color(0xFF1976D2)
 
         Row(
             modifier = Modifier
                 .fillMaxWidth()
-                .background(backgroundColor),
+                .background(toolbarColor),
             verticalAlignment = Alignment.CenterVertically
         ) {
             val contentColor = Color.White

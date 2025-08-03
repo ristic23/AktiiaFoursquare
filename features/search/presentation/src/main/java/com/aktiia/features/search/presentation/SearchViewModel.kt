@@ -44,7 +44,8 @@ class SearchViewModel(
                         )
                     when (val result =searchRepository.search(
                         query = action.query,
-                        ll = "43.3209,21.8958", // Nis
+//                        ll = "43.3209,21.8958", // Nis
+                        ll = "44.787197,20.457273", // Belgrade
                     )) {
                         is Result.Error -> {
                             state = state.copy(isErrorResult = true)

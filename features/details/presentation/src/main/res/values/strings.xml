@@ -1,4 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="open">Open</string>
+    <string name="open">Open now</string>
+    <string name="descEmpty">Description not filled</string>
+    <string name="telPrefix">Telephone:</string>
+    <string name="websitePrefix">Website:</string>
+    <string name="hoursPrefix">Hours open:</string>
+    <string name="isOpenPrefix">Current:</string>
+    <string name="closed">Closed now</string>
+    <string name="ratingPrefix">Rating:</string>
+    <string name="distancePrefix">Distance:</string>
+    <string name="addressPrefix">Address:</string>
+    <string name="detailsScreenTitle">Place Details</string>
 </resources>

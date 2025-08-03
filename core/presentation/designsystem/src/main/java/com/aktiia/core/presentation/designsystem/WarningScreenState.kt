@@ -51,7 +51,7 @@ fun WarningScreenState(
 
         Text(
             text = message,
-            style = MaterialTheme.typography.headlineSmall, // half-ish size of headlineLarge
+            style = MaterialTheme.typography.headlineSmall,
             textAlign = TextAlign.Center
         )
     }

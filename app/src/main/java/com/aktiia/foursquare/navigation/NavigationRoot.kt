@@ -35,13 +35,19 @@ fun NavigationRoot(
         ) { backStackEntry ->
             val placeId = backStackEntry.arguments?.getString("placeId") ?: ""
             DetailsScreenWrapper(
-                placeId = placeId
+                placeId = placeId,
+                onBack = {
+                    navController.navigateUp()
+                }
             )
         }
         composable(route = Routes.FAVORITES) {
             FavoritesScreenWrapper(
                 onPlaceClick = {
                     navController.navigate(Routes.placeWithId(it))
+                },
+                onBack = {
+                    navController.navigateUp()
                 }
             )
         }

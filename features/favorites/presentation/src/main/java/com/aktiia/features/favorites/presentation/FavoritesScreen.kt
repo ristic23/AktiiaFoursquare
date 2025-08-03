@@ -1,16 +1,22 @@
 package com.aktiia.features.favorites.presentation
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material.icons.filled.Search
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -28,12 +34,14 @@ import org.koin.androidx.compose.koinViewModel
 @Composable
 fun FavoritesScreenWrapper(
     onPlaceClick: (String) -> Unit,
+    onBack: () -> Unit,
     viewModel: FavoritesViewModel = koinViewModel(),
 ) {
 
     FavoritesScreen(
         state = viewModel.state,
         onPlaceClick = onPlaceClick,
+        onBack = onBack,
         onAction = viewModel::onAction,
     )
 }
@@ -43,8 +51,11 @@ fun FavoritesScreenWrapper(
 private fun FavoritesScreen(
     state: FavoritesState,
     onPlaceClick: (String) -> Unit,
+    onBack: () -> Unit,
     onAction: (FavoritesAction) -> Unit
 ) {
+    val contentColor = Color.DarkGray
+
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -52,7 +63,31 @@ private fun FavoritesScreen(
             .padding(vertical = 8.dp)
             .padding(horizontal = 8.dp)
     ) {
+        Box(
+            modifier = Modifier
+                .fillMaxWidth(),
+        ) {
+            Icon(
+                modifier = Modifier
+                    .size(32.dp)
+                    .align(Alignment.CenterStart)
+                    .clickable {
+                        onBack()
+                    },
+                imageVector = Icons.Filled.ArrowBack,
+                contentDescription = "Back",
+                tint = contentColor,
+            )
 
+            if (state.isLoading.not() && state.isEmptyResult.not())
+                Text(
+                    text = stringResource(id = R.string.favorites),
+                    modifier = Modifier
+                        .padding(vertical = 4.dp)
+                        .align(Alignment.Center),
+                    style = MaterialTheme.typography.headlineSmall
+                )
+        }
         when {
             state.isLoading -> {
                 CircularProgressIndicator(
@@ -72,13 +107,7 @@ private fun FavoritesScreen(
             }
 
             else -> {
-                Text(
-                    text = stringResource(id = R.string.favorites),
-                    modifier = Modifier
-                        .padding(vertical = 4.dp)
-                        .align(Alignment.CenterHorizontally),
-                    style = MaterialTheme.typography.titleSmall
-                )
+                Spacer(modifier = Modifier.height(8.dp))
                 LazyColumn(
                     modifier = Modifier.fillMaxSize()
                 ) {
@@ -111,5 +140,6 @@ private fun FavoritesScreenPreview() {
         state = FavoritesState(),
         onAction = {},
         onPlaceClick = {},
+        onBack = {},
     )
 }
