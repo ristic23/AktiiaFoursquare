@@ -109,7 +109,7 @@ private fun SearchScreen(
                 },
                 trailingIcon = {
                     when {
-                        state.isLoading -> {
+                        state.isLoadingSearch -> {
                             CircularProgressIndicator(
                                 modifier = Modifier.size(24.dp),
                                 color = contentColor,
@@ -164,6 +164,13 @@ private fun SearchScreen(
         }
         Spacer(modifier = Modifier.height(8.dp))
         when {
+            state.isLoading -> {
+                CircularProgressIndicator(
+                    modifier = Modifier.size(48.dp),
+                    color = Color.DarkGray,
+                    strokeWidth = 3.dp,
+                )
+            }
             state.allIsEmpty -> {
                 WarningScreenState(
                     modifier = Modifier.fillMaxSize(),

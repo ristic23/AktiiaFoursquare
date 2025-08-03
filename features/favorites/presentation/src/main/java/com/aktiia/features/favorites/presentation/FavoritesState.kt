@@ -6,5 +6,4 @@ data class FavoritesState(
     val favorites: List<PlaceData> = emptyList<PlaceData>(),
     val isLoading: Boolean = false,
     val isEmptyResult: Boolean = false,
-    val isErrorResult: Boolean = false,
 )

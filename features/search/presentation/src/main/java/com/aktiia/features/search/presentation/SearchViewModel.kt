@@ -18,13 +18,16 @@ class SearchViewModel(
     private val searchRepository: SearchRepository
 ) : ViewModel() {
 
-    var state by mutableStateOf(SearchState())
+    var state by mutableStateOf(SearchState(
+        isLoading = true
+    ))
         private set
 
     init {
         searchRepository.getPlaces().onEach { places ->
             state = state.copy(
                 allCachedPlaces = places,
+                isLoading = false
             )
         }.launchIn(viewModelScope)
     }
@@ -34,7 +37,7 @@ class SearchViewModel(
             is OnSearchClick -> {
                 viewModelScope.launch {
                     state = state.copy(
-                        isLoading = true,
+                        isLoadingSearch = true,
                         isEmptyResult = false,
                         isErrorResult = false,
                         showCachedPlaces = false,
@@ -53,7 +56,10 @@ class SearchViewModel(
                             )
                         }
                     }
-                    state = state.copy(isLoading = false)
+                    state = state.copy(
+                        isLoadingSearch = false,
+                        isLoading = false,
+                    )
                 }
             }
             is OnFavoriteClick -> {

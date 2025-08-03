@@ -14,14 +14,18 @@ class FavoritesViewModel(
     private val favoritesRepository: FavoritesRepository
 ) : ViewModel() {
 
-    var state by mutableStateOf(FavoritesState())
+    var state by mutableStateOf(FavoritesState(
+        isLoading = true
+    ))
         private set
 
     init {
 
         favoritesRepository.getFavoritePlaces().onEach {
             state = state.copy(
-                favorites = it
+                isLoading = false,
+                favorites = it,
+                isEmptyResult = it.isEmpty()
             )
         }.launchIn(viewModelScope)
     }

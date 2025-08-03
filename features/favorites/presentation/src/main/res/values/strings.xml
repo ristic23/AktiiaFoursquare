@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="emptyResultTitle">Empty</string>
+    <string name="emptyResultMessage">Add places to favories, and come back</string>
+    <string name="favorites">Favorites</string>
+</resources>
