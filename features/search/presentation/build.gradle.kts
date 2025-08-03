@@ -10,6 +10,7 @@ dependencies {
     implementation(projects.features.search.domain)
     implementation(projects.core.domain)
 
+    implementation(libs.kotlinx.coroutines.core)
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.appcompat)
     implementation(libs.material)

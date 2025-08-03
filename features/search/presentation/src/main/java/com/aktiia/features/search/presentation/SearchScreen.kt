@@ -39,6 +39,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.aktiia.core.presentation.designsystem.PlaceItem
 import com.aktiia.core.presentation.designsystem.WarningScreenState
 import com.aktiia.features.search.presentation.SearchAction.OnFavoriteClick
@@ -52,8 +53,11 @@ fun SearchScreenWrapper(
     onFavoriteClick: () -> Unit,
     viewModel: SearchViewModel = koinViewModel(),
 ) {
+    val queryState by viewModel.queryState.collectAsStateWithLifecycle("")
     SearchScreen(
         state = viewModel.state,
+        searchQuery = queryState,
+        onQueryChange = viewModel::onQueryChange,
         onAction = viewModel::onAction,
         onPlaceClick = onPlaceClick,
         onFavoriteClick = onFavoriteClick,
@@ -64,6 +68,8 @@ fun SearchScreenWrapper(
 @Composable
 private fun SearchScreen(
     state: SearchState,
+    searchQuery: String,
+    onQueryChange: (String) -> Unit,
     onPlaceClick: (String) -> Unit,
     onFavoriteClick: () -> Unit,
     onAction: (SearchAction) -> Unit
@@ -73,7 +79,6 @@ private fun SearchScreen(
             .fillMaxSize()
             .background(Color.LightGray)
     ) {
-        var searchQuery by rememberSaveable { mutableStateOf("") }
         var active by rememberSaveable { mutableStateOf(false) }
         val toolbarColor = Color(0xFF1976D2)
 
@@ -88,7 +93,7 @@ private fun SearchScreen(
                 modifier = Modifier
                     .weight(1f),
                 query = searchQuery,
-                onQueryChange = { searchQuery = it },
+                onQueryChange = onQueryChange,
                 onSearch = {
                     active = false
                     onAction(OnSearchClick(searchQuery))
@@ -121,7 +126,7 @@ private fun SearchScreen(
                             Icon(
                                 modifier = Modifier
                                     .clickable {
-                                        searchQuery = ""
+                                        onQueryChange("")
                                         onAction(OnSearchClear)
                                     },
                                 imageVector = Icons.Rounded.Close,
@@ -270,8 +275,10 @@ private fun ColumnScope.PlacesList(
 private fun SearchScreenPreview() {
     SearchScreen(
         state = SearchState(),
+        searchQuery = "",
         onAction = {},
         onPlaceClick = {},
         onFavoriteClick = {},
+        onQueryChange = {},
     )
 }

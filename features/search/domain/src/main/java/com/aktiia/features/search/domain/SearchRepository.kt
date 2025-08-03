@@ -7,12 +7,12 @@ import kotlinx.coroutines.flow.Flow
 
 interface SearchRepository {
 
-    fun getPlaces(): Flow<List<PlaceData>>
+    fun getAllCached(): Flow<List<PlaceData>>
 
-    suspend fun search(
+    fun search(
         query: String,
         ll: String,
-    ): Result<List<PlaceData>, DataError.Network>
+    ): Flow<Result<List<PlaceData>, DataError.Network>>
 
     suspend fun updateFavoriteStatus(id: String, isFavorite: Boolean): Result<PlaceId, DataError.Local>
 }

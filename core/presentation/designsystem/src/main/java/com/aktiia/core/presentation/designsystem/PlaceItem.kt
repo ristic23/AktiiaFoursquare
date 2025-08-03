@@ -40,7 +40,9 @@ fun PlaceItem(
                 Text(
                     text = placeName,
                     modifier = Modifier
-                        .padding(16.dp),
+                        .fillMaxWidth()
+                        .padding(vertical = 16.dp)
+                        .padding(start = 16.dp, end = 40.dp),
                     style = MaterialTheme.typography.titleLarge
                 )
                 if (distance.isNotBlank()) {
