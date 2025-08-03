@@ -11,6 +11,7 @@ data class SearchState(
     val isEmptyResult: Boolean = false,
     val isErrorResult: Boolean = false,
     val showCachedPlaces: Boolean = true,
+    val showLocationRationale: Boolean = false,
 ) {
     val allIsEmpty: Boolean = searchPlaces.isEmpty() && allCachedPlaces.isEmpty()
 }

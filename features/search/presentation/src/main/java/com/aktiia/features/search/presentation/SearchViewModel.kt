@@ -7,11 +7,14 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.aktiia.core.domain.location.LocationProvider
 import com.aktiia.core.domain.util.Result
 import com.aktiia.features.search.domain.SearchRepository
+import com.aktiia.features.search.presentation.SearchAction.DismissRationaleDialog
 import com.aktiia.features.search.presentation.SearchAction.OnFavoriteClick
 import com.aktiia.features.search.presentation.SearchAction.OnSearchClear
 import com.aktiia.features.search.presentation.SearchAction.OnSearchClick
+import com.aktiia.features.search.presentation.SearchAction.SubmitLocationPermissionInfo
 import kotlinx.coroutines.FlowPreview
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -24,7 +27,8 @@ import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
 
 class SearchViewModel(
-    private val searchRepository: SearchRepository
+    private val searchRepository: SearchRepository,
+    private val locationProvider: LocationProvider,
 ) : ViewModel() {
 
     var state by mutableStateOf(SearchState(isLoading = true))
@@ -54,8 +58,7 @@ class SearchViewModel(
                     )
                     val result = searchRepository.search(
                         query = query,
-//                        ll = "43.3209,21.8958", // Nis
-                        ll = "44.787197,20.457273", // Belgrade
+                        ll = locationProvider.getLocation()
                     ).first()
                     state = state.copy(
                         isLoadingSearch = false,
@@ -104,11 +107,23 @@ class SearchViewModel(
                 }
             }
 
-            OnSearchClear -> {
+            is OnSearchClear -> {
                 state = state.copy(
                     showCachedPlaces = true,
                     isEmptyResult = false,
                     isErrorResult = false,
+                )
+            }
+
+            is DismissRationaleDialog -> {
+               state = state.copy(
+                    showLocationRationale = false
+                )
+            }
+            is SubmitLocationPermissionInfo -> {
+//                hasLocationPermission.value = action.acceptedLocationPermission
+                state = state.copy(
+                    showLocationRationale = action.showLocationRationale
                 )
             }
         }

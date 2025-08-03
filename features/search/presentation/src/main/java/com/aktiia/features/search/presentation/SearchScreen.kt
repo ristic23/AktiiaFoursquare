@@ -1,5 +1,11 @@
 package com.aktiia.features.search.presentation
 
+import android.Manifest
+import android.content.Context
+import androidx.activity.ComponentActivity
+import androidx.activity.compose.rememberLauncherForActivityResult
+import androidx.activity.result.ActivityResultLauncher
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
@@ -28,23 +34,30 @@ import androidx.compose.material3.SearchBarDefaults
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import com.aktiia.core.presentation.designsystem.AktiiaDialog
+import com.aktiia.core.presentation.designsystem.AktiiaOutlinedActionButton
 import com.aktiia.core.presentation.designsystem.PlaceItem
 import com.aktiia.core.presentation.designsystem.WarningScreenState
+import com.aktiia.core.presentation.designsystem.util.hasLocationPermission
+import com.aktiia.core.presentation.designsystem.util.shouldShowLocationPermissionRationale
+import com.aktiia.features.search.presentation.SearchAction.DismissRationaleDialog
 import com.aktiia.features.search.presentation.SearchAction.OnFavoriteClick
 import com.aktiia.features.search.presentation.SearchAction.OnSearchClear
 import com.aktiia.features.search.presentation.SearchAction.OnSearchClick
+import com.aktiia.features.search.presentation.SearchAction.SubmitLocationPermissionInfo
 import org.koin.androidx.compose.koinViewModel
 
 @Composable
@@ -54,6 +67,7 @@ fun SearchScreenWrapper(
     viewModel: SearchViewModel = koinViewModel(),
 ) {
     val queryState by viewModel.queryState.collectAsStateWithLifecycle("")
+
     SearchScreen(
         state = viewModel.state,
         searchQuery = queryState,
@@ -74,6 +88,40 @@ private fun SearchScreen(
     onFavoriteClick: () -> Unit,
     onAction: (SearchAction) -> Unit
 ) {
+
+    val context = LocalContext.current
+    val permissionLauncher = rememberLauncherForActivityResult(
+        contract = ActivityResultContracts.RequestMultiplePermissions()
+    ) { perms ->
+        val hasCourseLocationPermission = perms[Manifest.permission.ACCESS_COARSE_LOCATION] == true
+        val hasFineLocationPermission = perms[Manifest.permission.ACCESS_FINE_LOCATION] == true
+
+        val activity = context as ComponentActivity
+        val showLocationRationale = activity.shouldShowLocationPermissionRationale()
+
+        onAction(
+            SubmitLocationPermissionInfo(
+                acceptedLocationPermission = hasCourseLocationPermission && hasFineLocationPermission,
+                showLocationRationale = showLocationRationale
+            )
+        )
+    }
+    LaunchedEffect(key1 = true) {
+        val activity = context as ComponentActivity
+        val showLocationRationale = activity.shouldShowLocationPermissionRationale()
+
+        onAction(
+            SubmitLocationPermissionInfo(
+                acceptedLocationPermission = context.hasLocationPermission(),
+                showLocationRationale = showLocationRationale
+            )
+        )
+
+        if (!showLocationRationale) {
+            permissionLauncher.requestPermissions(context)
+        }
+    }
+
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -213,6 +261,24 @@ private fun SearchScreen(
             }
         }
     }
+
+    if (state.showLocationRationale) {
+        AktiiaDialog(
+            title = stringResource(id = R.string.permission_required),
+            onDismiss = { /* Normal dismissing not allowed for permissions */ },
+            description = stringResource(id = R.string.location_rationale),
+            primaryButton = {
+                AktiiaOutlinedActionButton(
+                    text = stringResource(id = R.string.okay),
+                    isLoading = false,
+                    onClick = {
+                        onAction(DismissRationaleDialog)
+                        permissionLauncher.requestPermissions(context)
+                    },
+                )
+            }
+        )
+    }
 }
 
 @Composable
@@ -268,6 +334,20 @@ private fun ColumnScope.PlacesList(
             )
         }
     }
+}
+
+private fun ActivityResultLauncher<Array<String>>.requestPermissions(
+    context: Context
+) {
+    val hasLocationPermission = context.hasLocationPermission()
+
+    val locationPermissions = arrayOf(
+        Manifest.permission.ACCESS_COARSE_LOCATION,
+        Manifest.permission.ACCESS_FINE_LOCATION,
+    )
+
+    if(!hasLocationPermission)
+        launch(locationPermissions)
 }
 
 @Preview

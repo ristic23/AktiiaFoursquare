@@ -20,6 +20,7 @@ dependencies {
     implementation(projects.core.database)
     implementation(projects.core.domain)
     implementation(projects.core.presentation.designsystem)
+    implementation(projects.core.location)
 
     implementation(projects.features.details.data)
     implementation(projects.features.details.domain)

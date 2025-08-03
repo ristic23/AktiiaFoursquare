@@ -1,7 +1,7 @@
 package com.aktiia.core.domain.util
 
-sealed interface DataError: Error {
-    enum class Network: DataError {
+sealed interface DataError : Error {
+    enum class Network : DataError {
         REQUEST_TIMEOUT,
         UNAUTHORIZED,
         CONFLICT,
@@ -13,7 +13,7 @@ sealed interface DataError: Error {
         UNKNOWN
     }
 
-    enum class Local: DataError {
+    enum class Local : DataError {
         DISK_FULL,
         ERROR_FETCHING,
 

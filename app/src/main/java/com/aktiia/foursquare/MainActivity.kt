@@ -8,8 +8,8 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.ui.Modifier
 import androidx.navigation.compose.rememberNavController
+import com.aktiia.core.presentation.designsystem.theme.AktiiaFoursquareTheme
 import com.aktiia.foursquare.navigation.NavigationRoot
-import com.aktiia.foursquare.ui.theme.AktiiaFoursquareTheme
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
