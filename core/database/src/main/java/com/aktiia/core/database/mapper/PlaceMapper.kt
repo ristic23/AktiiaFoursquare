@@ -1,10 +1,10 @@
 package com.aktiia.core.database.mapper
 
-import com.aktiia.core.database.entity.PlaceEntity
+import com.aktiia.core.database.entity.SearchEntity
 import com.aktiia.core.domain.PlaceData
 
 
-fun PlaceEntity.toPlaceData(): PlaceData = PlaceData(
+fun SearchEntity.toPlaceData(): PlaceData = PlaceData(
     id = id,
     name = name,
     distance = distance,
@@ -12,7 +12,7 @@ fun PlaceEntity.toPlaceData(): PlaceData = PlaceData(
     isFavorite = isFavorite
 )
 
-fun PlaceData.toPlaceEntity(): PlaceEntity = PlaceEntity(
+fun PlaceData.toPlaceEntity(): SearchEntity = SearchEntity(
     id = id,
     name = name,
     distance = distance,

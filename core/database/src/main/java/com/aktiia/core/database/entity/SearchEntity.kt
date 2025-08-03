@@ -7,7 +7,7 @@ import androidx.room.PrimaryKey
 const val PLACE_TABLE_NAME = "PlacesTable"
 
 @Entity(tableName = PLACE_TABLE_NAME)
-data class PlaceEntity (
+data class SearchEntity (
     @PrimaryKey(autoGenerate = false)
     @ColumnInfo(name = "fsq_id")
     val id: String,
