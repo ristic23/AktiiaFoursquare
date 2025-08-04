@@ -7,6 +7,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.aktiia.core.domain.PlaceData
 import com.aktiia.core.domain.location.LocationProvider
 import com.aktiia.core.domain.util.Result
 import com.aktiia.features.search.domain.SearchRepository
@@ -101,10 +102,22 @@ class SearchViewModel(
 
             is OnFavoriteClick -> {
                 viewModelScope.launch {
-                    searchRepository.updateFavoriteStatus(
+                    val isFavorite = when (val result = searchRepository.updateFavoriteStatus(
                         id = action.id,
                         isFavorite = action.isFavorite
-                    )
+                    )) {
+                        is Result.Error -> false
+                        is Result.Success -> result.data
+                    }
+                    if (!state.showCachedPlaces) {
+                        state = state.copy(
+                            searchPlaces = updateFavoriteStatus(
+                                state.searchPlaces,
+                                action.id,
+                                isFavorite
+                            )
+                        )
+                    }
                 }
             }
 
@@ -125,6 +138,20 @@ class SearchViewModel(
                 state = state.copy(
                     showLocationRationale = action.showLocationRationale
                 )
+            }
+        }
+    }
+
+    private fun updateFavoriteStatus(
+        list: List<PlaceData>,
+        id: String,
+        newStatus: Boolean
+    ): List<PlaceData> {
+        return list.map { place ->
+            if (place.id == id) {
+                place.copy(isFavorite = newStatus)
+            } else {
+                place
             }
         }
     }
