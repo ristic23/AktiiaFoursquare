@@ -5,7 +5,6 @@ import androidx.compose.runtime.setValue
 import androidx.compose.runtime.getValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import androidx.lifecycle.viewmodel.compose.viewModel
 import com.aktiia.core.domain.util.Result
 import com.aktiia.features.details.domain.DetailsRepository
 import kotlinx.coroutines.flow.collectLatest
@@ -21,9 +20,20 @@ class DetailsViewModel(
     fun onAction(action: DetailsAction) {
         when (action) {
             is DetailsAction.OnFavoriteClick -> {
-                // todo switch favorite state
-//                state.item?.id
-//                state.item?.isFavorite
+                viewModelScope.launch {
+                    val isFavorite = detailsRepository.updateFavoriteStatus(
+                        state.item?.id ?: "",
+                        state.item?.isFavorite != true
+                    )
+                    state = state.copy(
+                        item = state.item?.copy(
+                            isFavorite = when (isFavorite) {
+                                is Result.Error -> state.item?.isFavorite == true
+                                is Result.Success -> isFavorite.data
+                            }
+                        )
+                    )
+                }
             }
         }
     }

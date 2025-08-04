@@ -119,7 +119,7 @@ private fun FavoritesScreen(
                             address = item.address,
                             isFavorite = item.isFavorite,
                             onFavoriteClick = {
-                                onAction(FavoritesAction.OnFavoriteOffClicked(item.id))
+                                onAction(FavoritesAction.OnFavoriteOffClicked(item.id, it))
                             },
                             onItemClick = { onPlaceClick(item.id) },
                         )

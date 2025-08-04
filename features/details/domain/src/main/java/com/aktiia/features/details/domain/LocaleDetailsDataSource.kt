@@ -11,6 +11,4 @@ interface LocaleDetailsDataSource {
     suspend fun upsert(place: PlaceDetailsData): Result<PlaceId, DataError.Local>
 
     suspend fun getById(id: String): Result<PlaceDetailsData, DataError.Local>
-
-    suspend fun updateFavorites(): Result<PlaceId, DataError.Local>
 }

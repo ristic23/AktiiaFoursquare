@@ -34,7 +34,7 @@ class FavoritesViewModel(
         when (action) {
             is FavoritesAction.OnFavoriteOffClicked -> {
                 viewModelScope.launch {
-                    favoritesRepository.updateFavoriteStatus(action.id)
+                    favoritesRepository.updateFavoriteStatus(action.id, action.isFavorite)
                 }
             }
         }

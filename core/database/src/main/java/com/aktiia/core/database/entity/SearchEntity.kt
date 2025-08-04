@@ -13,8 +13,8 @@ data class SearchEntity (
     val id: String,
     @ColumnInfo(name = "name")
     val name: String,
-    @ColumnInfo(name = "formattedAddress")
-    val formattedAddress: String,
+    @ColumnInfo(name = "address")
+    val address: String,
     @ColumnInfo(name = "distance")
     val distance: String,
     @ColumnInfo(name = "isFavorite")

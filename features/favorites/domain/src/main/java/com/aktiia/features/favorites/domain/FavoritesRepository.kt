@@ -7,7 +7,7 @@ import kotlinx.coroutines.flow.Flow
 
 interface FavoritesRepository {
 
-    suspend fun updateFavoriteStatus(id: String): Result<PlaceId, DataError.Local>
+    suspend fun updateFavoriteStatus(id: String, isFavorite: Boolean): Result<Boolean, DataError.Local>
 
     fun getFavoritePlaces(): Flow<List<PlaceData>>
 }

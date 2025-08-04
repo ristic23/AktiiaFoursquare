@@ -1,6 +1,7 @@
 package com.aktiia.features.details.data
 
 import com.aktiia.core.domain.PlaceDetailsData
+import com.aktiia.core.domain.favorites.LocaleFavoritesDataSource
 import com.aktiia.core.domain.util.DataError
 import com.aktiia.core.domain.util.Result
 import com.aktiia.features.details.domain.DetailsRepository
@@ -16,15 +17,32 @@ import kotlinx.coroutines.flow.flowOn
 class DetailsRepositoryImpl(
     private val remoteDetailsDataSource: RemoteDetailsDataSource,
     private val localeDetailsDataSource: LocaleDetailsDataSource,
+    private val localeFavoritesDataSource: LocaleFavoritesDataSource,
 ) : DetailsRepository {
 
     override fun fetchDetails(
         id: String
     ): Flow<Result<PlaceDetailsData, DataError.Network>> = flow {
+        val isFavorite = try {
+            val result = localeFavoritesDataSource.isFavorite(id)
+            if (result is Result.Success) {
+                result.data
+            } else {
+                false
+            }
+        } catch (e: Exception) {
+            false
+        }
         val localResult = localeDetailsDataSource.getById(id)
         val hasCached = localResult is Result.Success
         (localResult as? Result.Success)?.data?.let {
-            emit(Result.Success(it))
+            emit(
+                Result.Success(
+                    it.copy(
+                        isFavorite = isFavorite
+                    )
+                )
+            )
         }
 
         when (val resultApi = remoteDetailsDataSource.fetchDetails(id)) {
@@ -34,7 +52,13 @@ class DetailsRepositoryImpl(
 
             is Result.Success -> {
                 localeDetailsDataSource.upsert(resultApi.data)
-                emit(Result.Success(resultApi.data))
+                emit(
+                    Result.Success(
+                        resultApi.data.copy(
+                            isFavorite = isFavorite
+                        )
+                    )
+                )
             }
         }
     }.catch { emit(Result.Error(DataError.Network.UNKNOWN)) }
@@ -43,10 +67,20 @@ class DetailsRepositoryImpl(
             old is Result.Success && new is Result.Success && old.data == new.data
         }
 
-//    override suspend fun updateFavoriteStatus(
-//        id: String,
-//        isFavorite: Boolean
-//    ): Result<PlaceId, DataError.Local> {
-//        // todo with database
-//    }
+    override suspend fun updateFavoriteStatus(
+        id: String,
+        isFavorite: Boolean
+    ): Result<Boolean, DataError.Local> {
+        return try {
+            if (isFavorite) {
+                localeFavoritesDataSource.addFavoriteStatus(id)
+                Result.Success(true)
+            } else {
+                localeFavoritesDataSource.removeFavoriteStatus(id)
+                Result.Success(false)
+            }
+        } catch (e: Exception) {
+            Result.Error(DataError.Local.DISK_FULL)
+        }
+    }
 }

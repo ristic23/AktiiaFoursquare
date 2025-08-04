@@ -1,31 +1,46 @@
 package com.aktiia.core.database.sources
 
 import android.database.sqlite.SQLiteFullException
-import com.aktiia.core.database.dao.SearchDao
-import com.aktiia.core.database.mapper.toPlaceData
+import com.aktiia.core.database.dao.FavoritePlaceDao
+import com.aktiia.core.database.entity.FavoritePlaceEntity
 import com.aktiia.core.domain.PlaceData
 import com.aktiia.core.domain.util.DataError
 import com.aktiia.core.domain.util.Result
-import com.aktiia.features.favorites.domain.LocaleFavoritesDataSource
-import com.aktiia.features.favorites.domain.PlaceId
+import com.aktiia.core.domain.favorites.LocaleFavoritesDataSource
+import com.aktiia.core.domain.util.EmptyResult
+import com.aktiia.core.domain.util.asEmptyDataResult
 import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.map
 
 class RoomFavoritesLocaleDataSource(
-    private val placesDao: SearchDao
+    private val favoritePlaceDao: FavoritePlaceDao
 ): LocaleFavoritesDataSource {
-    override suspend fun removeFavoriteStatus(id: String): Result<PlaceId, DataError.Local> {
+    override suspend fun removeFavoriteStatus(id: String): EmptyResult<DataError.Local> {
         return try {
-            placesDao.updateFavoriteStatus(id, false)
-            Result.Success(id)
+            favoritePlaceDao.deleteFavorite(FavoritePlaceEntity(id))
+            Result.Success(true).asEmptyDataResult()
+        } catch (e: SQLiteFullException) {
+            Result.Error(DataError.Local.DISK_FULL)
+        }
+    }
+
+    override suspend fun addFavoriteStatus(id: String): EmptyResult<DataError.Local> {
+        return try {
+            favoritePlaceDao.insertFavorite(FavoritePlaceEntity(id))
+            Result.Success(true).asEmptyDataResult()
+        } catch (e: SQLiteFullException) {
+            Result.Error(DataError.Local.DISK_FULL)
+        }
+    }
+
+    override suspend fun isFavorite(id: String): Result<Boolean, DataError.Local> {
+        return try {
+            Result.Success(favoritePlaceDao.isFavorite(id) != null)
         } catch (e: SQLiteFullException) {
             Result.Error(DataError.Local.DISK_FULL)
         }
     }
 
     override fun getFavoritePlaces(): Flow<List<PlaceData>> {
-        return placesDao.getFavoritePlaces().map { favorites ->
-            favorites.map { entity -> entity.toPlaceData() }
-        }
+        return favoritePlaceDao.getFavoritePlaces()
     }
 }

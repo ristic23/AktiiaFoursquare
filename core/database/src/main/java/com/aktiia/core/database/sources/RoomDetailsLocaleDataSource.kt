@@ -11,8 +11,8 @@ import com.aktiia.features.details.domain.LocaleDetailsDataSource
 import com.aktiia.features.details.domain.PlaceId
 
 class RoomDetailsLocaleDataSource(
-    private val detailsDao: DetailsDao
-): LocaleDetailsDataSource {
+    private val detailsDao: DetailsDao,
+) : LocaleDetailsDataSource {
     override suspend fun upsert(place: PlaceDetailsData): Result<PlaceId, DataError.Local> {
         return try {
             detailsDao.upsert(
@@ -33,10 +33,5 @@ class RoomDetailsLocaleDataSource(
         } catch (e: SQLiteFullException) {
             Result.Error(DataError.Local.DISK_FULL)
         }
-    }
-
-    override suspend fun updateFavorites(): Result<PlaceId, DataError.Local> {
-        // todo
-        return Result.Error(DataError.Local.DISK_FULL)
     }
 }

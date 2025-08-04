@@ -5,14 +5,17 @@ import androidx.room.RoomDatabase
 import androidx.room.TypeConverters
 import com.aktiia.core.database.converter.TypeConverts
 import com.aktiia.core.database.dao.DetailsDao
+import com.aktiia.core.database.dao.FavoritePlaceDao
 import com.aktiia.core.database.dao.SearchDao
+import com.aktiia.core.database.entity.FavoritePlaceEntity
 import com.aktiia.core.database.entity.PlaceEntity
 import com.aktiia.core.database.entity.SearchEntity
 
 @Database(
     entities = [
         SearchEntity::class,
-        PlaceEntity::class
+        PlaceEntity::class,
+        FavoritePlaceEntity::class,
     ],
     version = 1
 )
@@ -21,4 +24,5 @@ abstract class PlacesDatabase : RoomDatabase() {
 
     abstract val searchDao: SearchDao
     abstract val detailsDao: DetailsDao
+    abstract val favoritePlaceDao: FavoritePlaceDao
 }

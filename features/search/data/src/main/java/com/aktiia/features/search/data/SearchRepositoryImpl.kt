@@ -1,10 +1,10 @@
 package com.aktiia.features.search.data
 
 import com.aktiia.core.domain.PlaceData
+import com.aktiia.core.domain.favorites.LocaleFavoritesDataSource
 import com.aktiia.core.domain.util.DataError
 import com.aktiia.core.domain.util.Result
 import com.aktiia.features.search.domain.LocaleSearchDataSource
-import com.aktiia.features.search.domain.PlaceId
 import com.aktiia.features.search.domain.RemoteSearchDataSource
 import com.aktiia.features.search.domain.SearchRepository
 import kotlinx.coroutines.Dispatchers
@@ -18,6 +18,7 @@ import kotlinx.coroutines.flow.flowOn
 class SearchRepositoryImpl(
     private val remoteSearchDataSource: RemoteSearchDataSource,
     private val localeSearchDataSource: LocaleSearchDataSource,
+    private val localeFavoritesDataSource: LocaleFavoritesDataSource
 ) : SearchRepository {
 
     override fun getAllCached(): Flow<List<PlaceData>> {
@@ -55,7 +56,17 @@ class SearchRepositoryImpl(
     override suspend fun updateFavoriteStatus(
         id: String,
         isFavorite: Boolean
-    ): Result<PlaceId, DataError.Local> {
-        return localeSearchDataSource.updateFavoriteStatus(id, isFavorite)
+    ): Result<Boolean, DataError.Local> {
+        return try {
+            if (isFavorite) {
+                localeFavoritesDataSource.addFavoriteStatus(id)
+                Result.Success(true)
+            } else {
+                localeFavoritesDataSource.removeFavoriteStatus(id)
+                Result.Success(false)
+            }
+        } catch (e: Exception) {
+            Result.Error(DataError.Local.DISK_FULL)
+        }
     }
 }

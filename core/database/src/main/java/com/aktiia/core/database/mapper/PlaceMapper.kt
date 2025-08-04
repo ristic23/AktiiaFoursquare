@@ -14,7 +14,7 @@ fun SearchEntity.toPlaceData(): PlaceData = PlaceData(
     id = id,
     name = name,
     distance = distance,
-    address = formattedAddress,
+    address = address,
     isFavorite = isFavorite
 )
 
@@ -22,7 +22,7 @@ fun PlaceData.toPlaceEntity(): SearchEntity = SearchEntity(
     id = id,
     name = name,
     distance = distance,
-    formattedAddress = address,
+    address = address,
     isFavorite = isFavorite
 )
 

@@ -6,8 +6,8 @@ import com.aktiia.core.database.converter.TypeConverts
 import com.aktiia.core.database.sources.RoomDetailsLocaleDataSource
 import com.aktiia.core.database.sources.RoomFavoritesLocaleDataSource
 import com.aktiia.core.database.sources.RoomSearchLocaleDataSource
+import com.aktiia.core.domain.favorites.LocaleFavoritesDataSource
 import com.aktiia.features.details.domain.LocaleDetailsDataSource
-import com.aktiia.features.favorites.domain.LocaleFavoritesDataSource
 import com.aktiia.features.search.domain.LocaleSearchDataSource
 import org.koin.android.ext.koin.androidApplication
 import org.koin.core.module.dsl.singleOf
@@ -27,6 +27,7 @@ val databaseModule = module {
     }
     single { get<PlacesDatabase>().searchDao }
     single { get<PlacesDatabase>().detailsDao }
+    single { get<PlacesDatabase>().favoritePlaceDao }
 
     singleOf(::RoomSearchLocaleDataSource).bind<LocaleSearchDataSource>()
     singleOf(::RoomFavoritesLocaleDataSource).bind<LocaleFavoritesDataSource>()

@@ -10,8 +10,5 @@ interface DetailsRepository {
         id: String,
     ): Flow<Result<PlaceDetailsData, DataError.Network>>
 
-//    suspend fun updateFavoriteStatus(
-//        id: String,
-//        isFavorite: Boolean
-//    ): Result<PlaceId, DataError.Local>
+    suspend fun updateFavoriteStatus(id: String, isFavorite: Boolean): Result<Boolean, DataError.Local>
 }
