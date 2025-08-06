@@ -8,6 +8,8 @@ on:
 jobs:
   test:
     runs-on: ubuntu-latest
+    env:
+      API_KEY: ${{ secrets.API_KEY }}
 
     steps:
       - name: ⬇️ Checkout code
@@ -24,5 +26,3 @@ jobs:
 
       - name: 🧪 Run Unit Tests
         run: ./gradlew testDebugUnitTest
-        env:
-          API_KEY: ${{ secrets.API_KEY }}

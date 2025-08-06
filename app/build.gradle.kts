@@ -1,3 +1,16 @@
+import java.util.Properties
+
+fun getApiKey(): String {
+    val localPropertiesFile = rootProject.file("local.properties")
+    if (localPropertiesFile.exists()) {
+        val properties = Properties()
+        properties.load(localPropertiesFile.inputStream())
+        return properties.getProperty("API_KEY")
+            ?: throw GradleException("API_KEY not found in local.properties")
+    }
+    throw GradleException("local.properties file not found")
+}
+
 plugins {
     alias(libs.plugins.aktiia.android.application.compose)
     alias(libs.plugins.aktiia.jvm.retrofit)
@@ -12,6 +25,7 @@ android {
         vectorDrawables {
             useSupportLibrary = true
         }
+        buildConfigField("String", "API_KEY", "\"${getApiKey()}\"")
     }
 }
 
