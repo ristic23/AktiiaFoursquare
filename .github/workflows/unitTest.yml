@@ -19,10 +19,10 @@ jobs:
           distribution: 'temurin'
           java-version: 17
 
+      - name: 📱 Set up Android SDK
+        uses: android-actions/setup-android@v3
+
       - name: 🧪 Run Unit Tests
         run: ./gradlew testDebugUnitTest
         env:
           API_KEY: ${{ secrets.API_KEY }}
-
-      - name: 📱 Set up Android SDK
-        uses: android-actions/setup-android@v3
