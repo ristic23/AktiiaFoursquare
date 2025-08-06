@@ -1,5 +1,4 @@
 import com.aktiia.convention.configureAndroidCompose
-import com.aktiia.convention.configureApiKeys
 import com.android.build.gradle.LibraryExtension
 import org.gradle.api.Plugin
 import org.gradle.api.Project
@@ -13,7 +12,7 @@ class AndroidLibraryComposeConventionPlugin : Plugin<Project> {
                 apply("aktiia.android.library")
                 apply("org.jetbrains.kotlin.plugin.compose")
             }
-            configureApiKeys()
+
             val extension = extensions.getByType<LibraryExtension>()
             configureAndroidCompose(extension)
         }

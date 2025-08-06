@@ -1,5 +1,4 @@
 import com.aktiia.convention.ExtensionType
-import com.aktiia.convention.configureApiKeys
 import com.aktiia.convention.configureBuildTypes
 import com.aktiia.convention.configureKotlinAndroid
 import com.aktiia.convention.libs
@@ -24,8 +23,6 @@ class AndroidApplicationConventionPlugin: Plugin<Project> {
                     versionName = libs.findVersion("projectVersionName").get().toString()
                 }
                 configureKotlinAndroid(this)
-
-                configureApiKeys()
 
                 configureBuildTypes(
                     commonExtension = this,

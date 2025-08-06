@@ -1,5 +1,4 @@
 import com.aktiia.convention.configureAndroidCompose
-import com.aktiia.convention.configureApiKeys
 import com.android.build.api.dsl.ApplicationExtension
 import org.gradle.api.Plugin
 import org.gradle.api.Project
@@ -14,7 +13,6 @@ class AndroidApplicationComposeConventionPlugin: Plugin<Project> {
             val extensions = extensions.getByType<ApplicationExtension>()
             configureAndroidCompose(extensions)
 
-            configureApiKeys()
         }
     }
 

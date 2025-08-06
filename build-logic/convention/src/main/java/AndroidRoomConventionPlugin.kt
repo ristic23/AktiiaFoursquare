@@ -1,5 +1,4 @@
 import androidx.room.gradle.RoomExtension
-import com.aktiia.convention.configureApiKeys
 import com.aktiia.convention.libs
 import org.gradle.api.Plugin
 import org.gradle.api.Project
@@ -18,8 +17,6 @@ class AndroidRoomConventionPlugin : Plugin<Project> {
             extensions.configure<RoomExtension> {
                 schemaDirectory("$projectDir/schemas")
             }
-
-            configureApiKeys()
 
             dependencies {
                 "implementation"(libs.findLibrary("room.runtime").get())
