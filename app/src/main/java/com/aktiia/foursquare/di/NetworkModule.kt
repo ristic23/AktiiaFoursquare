@@ -1,14 +1,12 @@
 package com.aktiia.foursquare.di
 
 import com.aktiia.core.presentation.designsystem.BuildConfig
-import com.aktiia.features.details.data.network.DetailsApi
-import com.aktiia.features.search.data.network.SearchApi
 import com.jakewharton.retrofit2.converter.kotlinx.serialization.asConverterFactory
 import kotlinx.serialization.json.Json
+import okhttp3.MediaType.Companion.toMediaType
 import okhttp3.OkHttpClient
 import org.koin.dsl.module
 import retrofit2.Retrofit
-import okhttp3.MediaType.Companion.toMediaType
 
 val networkModule = module {
     single {
@@ -38,12 +36,5 @@ val networkModule = module {
             .client(get())
             .addConverterFactory(get<Json>().asConverterFactory(contentType))
             .build()
-    }
-
-    single<SearchApi> {
-        get<Retrofit>().create(SearchApi::class.java)
-    }
-    single<DetailsApi> {
-        get<Retrofit>().create(DetailsApi::class.java)
     }
 }
