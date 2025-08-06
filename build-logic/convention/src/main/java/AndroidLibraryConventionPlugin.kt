@@ -1,4 +1,5 @@
 import com.aktiia.convention.ExtensionType
+import com.aktiia.convention.configureApiKeys
 import com.aktiia.convention.configureBuildTypes
 import com.aktiia.convention.configureKotlinAndroid
 import com.android.build.gradle.LibraryExtension
@@ -24,7 +25,7 @@ class AndroidLibraryConventionPlugin : Plugin<Project> {
                     commonExtension = this,
                     extensionType = ExtensionType.LIBRARY
                 )
-
+                configureApiKeys()
 
                 defaultConfig {
                     testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"

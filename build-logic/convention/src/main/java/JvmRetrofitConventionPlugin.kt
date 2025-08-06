@@ -1,3 +1,4 @@
+import com.aktiia.convention.configureApiKeys
 import com.aktiia.convention.libs
 import org.gradle.api.Plugin
 import org.gradle.api.Project
@@ -7,7 +8,7 @@ class JvmRetrofitConventionPlugin : Plugin<Project> {
     override fun apply(target: Project) {
         target.run {
             pluginManager.apply("org.jetbrains.kotlin.plugin.serialization")
-
+            configureApiKeys()
             dependencies {
                 "implementation"(libs.findLibrary("retrofit").get())
                 "implementation"(libs.findLibrary("okhttp").get())
