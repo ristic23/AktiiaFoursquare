@@ -3,16 +3,16 @@
 ## Overview
 
 This Android app was developed as a test assignment for a Senior Android Developer position at Aktiia.  
-It allows users to search for venues using the Foursquare API, view details, and save favorites — all with offline support.
+It allows users to search for places using the Foursquare API, view details, and save favorites — all with offline support.
 
 ---
 
 ## Features
 
 ### Core Functionality
-- Search venues by keyword and current location
-- View detailed information about venues
-- Save venues as favorites and access them anytime
+- Search places by keyword and current location
+- View detailed information about places
+- Save places as favorites and access them anytime
 - Offline support with cached search results
 - Rationale dialog and permission handling for location access
 
@@ -49,7 +49,8 @@ It allows users to search for venues using the Foursquare API, view details, and
 
 ## Future Enhancements
 
-- Separate screen for all venues vs search results
-- Full-screen venue photo preview
-- Sorting options for venues (by distance, rating, etc.)
+- Separate screen for all places vs search results
+- Full-screen place photo preview
+- Sorting and filtering options for places (by distance, rating, etc.)
+- Allow user to manually input a location and search by it (instead of only using current location)
 

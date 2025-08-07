@@ -10,7 +10,7 @@
     <string name="allIsEmptyMessage">Start with using search at the top of the screen</string>
     <string name="search">Search</string>
     <string name="permission_required">Permission required</string>
-    <string name="location_rationale">In order to show places based on your location, this app needs your permission for that. Please click on \\\"Okay\\\" to grant it.</string>
+    <string name="location_rationale">In order to show places based on your location, this app needs your permission for that. Please click on \"Okay\" to grant it.</string>
     <string name="okay">Okay</string>
     <string name="locationPermissionNeeded">Please allow Location Permission</string>
     <string name="locationDisabled">Enable GPS Location option in settings</string>
