@@ -15,6 +15,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -24,6 +25,7 @@ fun WarningScreenState(
     modifier: Modifier = Modifier,
     icon: ImageVector,
     title: String,
+    iconTestTag: String,
     message: String,
 ) {
     Column(
@@ -33,10 +35,11 @@ fun WarningScreenState(
     ) {
 
         Icon(
-            imageVector = icon,
-            contentDescription = null,
             modifier = Modifier
-                .size(60.dp)
+                .testTag(iconTestTag)
+                .size(60.dp),
+            contentDescription = null,
+            imageVector = icon,
         )
 
         Spacer(modifier = Modifier.height(16.dp))
@@ -66,6 +69,7 @@ private fun WarningScreenStatePreview() {
             .fillMaxSize(),
         icon = Icons.Filled.Search,
         title = "Empty cache",
-        message = "Try searching for new places"
+        message = "Try searching for new places",
+        iconTestTag = "Icon tag"
     )
 }

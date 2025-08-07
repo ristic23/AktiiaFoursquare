@@ -69,7 +69,7 @@ fun DetailsScreenWrapper(
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-private fun DetailsScreen(
+fun DetailsScreen(
     state: DetailsState,
     onBack: () -> Unit,
     onAction: (DetailsAction) -> Unit

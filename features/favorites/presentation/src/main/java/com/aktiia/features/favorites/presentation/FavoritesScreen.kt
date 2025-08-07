@@ -47,7 +47,7 @@ fun FavoritesScreenWrapper(
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-private fun FavoritesScreen(
+fun FavoritesScreen(
     state: FavoritesState,
     onPlaceClick: (String) -> Unit,
     onBack: () -> Unit,

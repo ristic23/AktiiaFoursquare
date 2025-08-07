@@ -1,3 +1,5 @@
+@file:OptIn(ExperimentalMaterial3Api::class)
+
 package com.aktiia.features.search.presentation
 
 import android.Manifest
@@ -44,6 +46,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -80,9 +83,8 @@ fun SearchScreenWrapper(
     )
 }
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
-private fun SearchScreen(
+fun SearchScreen(
     state: SearchState,
     searchQuery: String,
     onQueryChange: (String) -> Unit,
@@ -119,6 +121,42 @@ private fun SearchScreen(
         }
     }
 
+    SearchScreenContent(
+        state = state,
+        searchQuery = searchQuery,
+        onQueryChange = onQueryChange,
+        onAction = onAction,
+        onPlaceClick = onPlaceClick,
+        onFavoriteClick = onFavoriteClick,
+    )
+
+    if (state.showLocationRationale) {
+        AktiiaDialog(
+            title = stringResource(id = R.string.permission_required),
+            onDismiss = { /* Normal dismissing not allowed for permissions */ },
+            description = stringResource(id = R.string.location_rationale),
+            primaryButton = {
+                AktiiaOutlinedActionButton(
+                    text = stringResource(id = R.string.okay),
+                    onClick = {
+                        onAction(DismissRationaleDialog)
+                        permissionLauncher.requestPermissions(context)
+                    },
+                )
+            }
+        )
+    }
+}
+
+@Composable
+fun SearchScreenContent(
+    state: SearchState,
+    searchQuery: String,
+    onQueryChange: (String) -> Unit,
+    onPlaceClick: (String) -> Unit,
+    onFavoriteClick: () -> Unit,
+    onAction: (SearchAction) -> Unit
+) {
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -131,7 +169,8 @@ private fun SearchScreen(
                 modifier = Modifier
                     .fillMaxWidth()
                     .height(24.dp)
-                    .background(MaterialTheme.colorScheme.error),
+                    .background(MaterialTheme.colorScheme.error)
+                    .testTag("Warning Banner"),
                 contentAlignment = Alignment.Center
             ) {
                 Text(
@@ -175,6 +214,8 @@ private fun SearchScreen(
                 },
                 leadingIcon = {
                     Icon(
+                        modifier = Modifier
+                            .testTag("Search Icon"),
                         imageVector = Icons.Rounded.Search,
                         contentDescription = "Search icon",
                         tint = contentColor,
@@ -228,6 +269,7 @@ private fun SearchScreen(
             Icon(
                 modifier = Modifier
                     .size(32.dp)
+                    .testTag("Favorites Icon")
                     .clickable(onClick = { onFavoriteClick() }),
                 imageVector = Icons.Filled.Favorite,
                 contentDescription = "Favorites",
@@ -239,7 +281,9 @@ private fun SearchScreen(
         when {
             state.isLoading -> {
                 CircularProgressIndicator(
-                    modifier = Modifier.size(48.dp),
+                    modifier = Modifier
+                        .size(48.dp)
+                        .testTag("Circular Progress"),
                     color = MaterialTheme.colorScheme.onSurface,
                     strokeWidth = 3.dp,
                 )
@@ -250,6 +294,7 @@ private fun SearchScreen(
                     icon = Icons.Filled.Search,
                     title = stringResource(R.string.allIsEmptyTitle),
                     message = stringResource(R.string.allIsEmptyMessage),
+                    iconTestTag = "All Is Empty Icon",
                 )
             }
 
@@ -259,6 +304,7 @@ private fun SearchScreen(
                     icon = Icons.Filled.Search,
                     title = stringResource(R.string.emptyResultTitle),
                     message = stringResource(R.string.emptyResultMessage),
+                    iconTestTag = "Empty Result Icon",
                 )
             }
 
@@ -268,6 +314,7 @@ private fun SearchScreen(
                     icon = Icons.Filled.Close,
                     title = stringResource(R.string.errorResultTitle),
                     message = stringResource(R.string.errorResultMessage),
+                    iconTestTag = "Error Result Icon",
                 )
             }
 
@@ -280,27 +327,10 @@ private fun SearchScreen(
             }
         }
     }
-
-    if (state.showLocationRationale) {
-        AktiiaDialog(
-            title = stringResource(id = R.string.permission_required),
-            onDismiss = { /* Normal dismissing not allowed for permissions */ },
-            description = stringResource(id = R.string.location_rationale),
-            primaryButton = {
-                AktiiaOutlinedActionButton(
-                    text = stringResource(id = R.string.okay),
-                    onClick = {
-                        onAction(DismissRationaleDialog)
-                        permissionLauncher.requestPermissions(context)
-                    },
-                )
-            }
-        )
-    }
 }
 
 @Composable
-private fun ColumnScope.PlacesList(
+fun ColumnScope.PlacesList(
     state: SearchState,
     onAction: (SearchAction) -> Unit,
     onPlaceClick: (String) -> Unit,
