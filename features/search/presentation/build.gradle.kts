@@ -1,5 +1,6 @@
 plugins {
     alias(libs.plugins.aktiia.android.feature.ui)
+    alias(libs.plugins.aktiia.jvm.junit5)
 }
 
 android {

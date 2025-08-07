@@ -58,7 +58,7 @@ private fun BuildType.configureReleaseBuildType(
     buildConfigField("String", "API_KEY", "\"$apiKey\"")
     buildConfigField("String", "BASE_URL", "\"https://api.foursquare.com/v3/places/\"")
 
-    isMinifyEnabled = true
+    isMinifyEnabled = false
     proguardFiles(
         commonExtension.getDefaultProguardFile("proguard-android-optimize.txt"),
         "proguard-rules.pro"

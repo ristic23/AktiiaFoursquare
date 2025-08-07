@@ -1,6 +1,7 @@
 plugins {
     alias(libs.plugins.aktiia.android.library)
     alias(libs.plugins.aktiia.android.room)
+    alias(libs.plugins.aktiia.jvm.junit5)
     kotlin("plugin.serialization")
 }
 

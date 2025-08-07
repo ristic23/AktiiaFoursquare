@@ -1,6 +1,5 @@
-package com.aktiia.core.database.favorites
+package com.aktiia.core.database.locale
 
-import com.aktiia.core.database.search.RoomSearchLocaleDataSourceFake
 import com.aktiia.core.domain.PlaceData
 import com.aktiia.core.domain.favorites.LocaleFavoritesDataSource
 import com.aktiia.core.domain.util.DataError
@@ -9,9 +8,10 @@ import com.aktiia.core.domain.util.Result
 import com.aktiia.core.domain.util.asEmptyDataResult
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
+import kotlin.collections.filter
 
 class LocaleFavoritesDataSourceFake(
-    private val roomSearchLocaleDataSourceFake: RoomSearchLocaleDataSourceFake
+    private val roomSearchLocaleDataSourceFake: LocaleSearchDataSourceFake
 ): LocaleFavoritesDataSource {
 
     private var items: MutableList<String> = mutableListOf<String>()

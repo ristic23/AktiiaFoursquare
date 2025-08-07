@@ -4,22 +4,22 @@ import com.aktiia.core.database.common.place
 import com.aktiia.core.database.details.LocaleDetailsDataSourceFake
 import com.aktiia.core.domain.util.DataError
 import com.aktiia.core.domain.util.Result
-import junit.framework.TestCase.assertTrue
-import kotlinx.coroutines.test.runTest
-import org.junit.Before
-import org.junit.Test
+import kotlinx.coroutines.runBlocking
+import org.junit.jupiter.api.Assertions.*
+import org.junit.jupiter.api.BeforeEach
+import org.junit.jupiter.api.Test
 
 class LocaleDetailsDataSourceFakeTest {
 
     private lateinit var detailsFake: LocaleDetailsDataSourceFake
 
-    @Before
+    @BeforeEach
     fun setUp() {
         detailsFake = LocaleDetailsDataSourceFake()
     }
 
     @Test
-    fun `add multiple places and getById success`() = runTest {
+    fun `add multiple places and getById success`() = runBlocking {
         detailsFake.upsert(place("1", "Coffee", true))
         detailsFake.upsert(place("2", "Coffee #2"))
         detailsFake.upsert(place("3", "Bar"))
@@ -29,7 +29,7 @@ class LocaleDetailsDataSourceFakeTest {
     }
 
     @Test
-    fun `add multiple places and getById error`() = runTest {
+    fun `add multiple places and getById error`() = runBlocking {
         detailsFake.upsert(place("1", "Coffee", true))
         detailsFake.upsert(place("2", "Coffee #2"))
         detailsFake.upsert(place("3", "Bar"))

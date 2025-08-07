@@ -1,4 +1,5 @@
-package com.aktiia.core.database.search
+package com.aktiia.core.database.locale
+
 
 import com.aktiia.core.database.common.upsert
 import com.aktiia.core.domain.PlaceData
@@ -8,8 +9,10 @@ import com.aktiia.features.search.domain.LocaleSearchDataSource
 import com.aktiia.features.search.domain.PlaceId
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
+import kotlin.collections.map
+import kotlin.collections.toList
 
-class RoomSearchLocaleDataSourceFake: LocaleSearchDataSource {
+class LocaleSearchDataSourceFake: LocaleSearchDataSource {
 
     private var items: MutableList<PlaceData> = mutableListOf<PlaceData>()
 
