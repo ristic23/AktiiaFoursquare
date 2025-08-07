@@ -100,6 +100,7 @@ fun FavoritesScreen(
                     icon = Icons.Filled.Search,
                     title = stringResource(R.string.emptyResultTitle),
                     message = stringResource(R.string.emptyResultMessage),
+                    iconTestTag = "Empty Icon"
                 )
             }
 
