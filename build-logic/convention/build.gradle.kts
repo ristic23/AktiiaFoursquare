@@ -46,5 +46,13 @@ gradlePlugin {
             id = "aktiia.jvm.retrofit"
             implementationClass = "JvmRetrofitConventionPlugin"
         }
+        register("jvmJunit5") {
+            id = "aktiia.jvm.junit5"
+            implementationClass = "JvmJUnit5ConventionPlugin"
+        }
+        register("androidJunit5") {
+            id = "aktiia.android.junit5"
+            implementationClass = "AndroidJUnit5ConventionPlugin"
+        }
     }
 }
