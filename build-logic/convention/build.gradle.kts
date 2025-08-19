@@ -54,5 +54,9 @@ gradlePlugin {
             id = "aktiia.android.junit5"
             implementationClass = "AndroidJUnit5ConventionPlugin"
         }
+        register("appFlavors") {
+            id = "aktiia.app.flavors"
+            implementationClass = "AndroidFlavorsConventionalPlugin"
+        }
     }
 }

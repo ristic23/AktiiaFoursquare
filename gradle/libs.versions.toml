@@ -115,6 +115,7 @@ aktiia-jvm-library = { id = "aktiia.jvm.library", version="unspecified" }
 aktiia-jvm-retrofit = { id = "aktiia.jvm.retrofit", version="unspecified" }
 aktiia-jvm-junit5 = { id = "aktiia.jvm.junit5", version = "unspecified" }
 aktiia-android-junit5 = { id = "aktiia.android.junit5", version = "unspecified" }
+aktiia-app-flavors = { id = "aktiia.app.flavors", version = "unspecified" }
 
 [bundles]
 compose = [
